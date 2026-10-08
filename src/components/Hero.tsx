@@ -9,9 +9,9 @@ export default function Hero() {
           {/* Left Content */}
           <div className="relative z-10 max-w-[650px]">
 
-            {/* Date Badge */}
+            {/* Date */}
             <div className="mb-4 inline-flex rounded-full bg-[#e7f6ed] px-4 py-2 text-sm font-medium text-[#16834b]">
-              বুধবার, ৮ অক্টোবর, ২০২৬
+              বৃহস্পতিবার, ৬ আগস্ট, ২০২৬
             </div>
 
             {/* Heading */}
@@ -20,19 +20,19 @@ export default function Hero() {
             </h1>
 
             {/* Description */}
-            <p className="mt-4 max-w-[600px] text-sm leading-6 text-[#66716a] sm:text-base">
-              চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও অন্যান্য পণ্যের
-              বাজারদর—প্রতিদিনকার বাজারের মূল্য ও প্রয়োজনীয় তথ্য
-              সহজেই দেখুন।
+            <p className="mt-4 max-w-[620px] text-sm leading-7 text-[#66716a] sm:text-base">
+              চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম -
+              বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং
+              দামের পরিবর্তন এক জায়গায়।
             </p>
 
             {/* Button */}
-            <button
-              type="button"
-              className="mt-6 rounded-lg bg-[#009b4d] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#008542] active:scale-95"
+            <a
+              href="#সব-পণ্য"
+              className="mt-6 inline-flex rounded-lg bg-[#009b4d] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#008542] active:scale-95"
             >
-              সব দাম দেখুন
-            </button>
+              সব পণ্য দেখুন
+            </a>
           </div>
 
           {/* Right Side Image */}

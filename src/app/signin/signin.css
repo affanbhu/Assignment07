@@ -1,0 +1,494 @@
+* {
+  box-sizing: border-box;
+}
+
+.signin-page {
+  min-height: 100vh;
+  background: #f5f8f4;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.signin-header {
+  height: 62px;
+  background: #ffffff;
+  border-bottom: 1px solid #e4e8e4;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 11%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-box {
+  width: 30px;
+  height: 30px;
+
+  background: #3d914b;
+  color: white;
+
+  border-radius: 7px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.brand-info h2 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.brand-info p {
+  margin: 2px 0 0;
+
+  font-size: 7px;
+  color: #777;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.signin-link {
+  color: #222;
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.signup-button {
+  background: #3d914b;
+  color: white;
+
+  padding: 8px 15px;
+  border-radius: 5px;
+
+  text-decoration: none;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.main-nav {
+  height: 35px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e9ece9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 38px;
+}
+
+.main-nav a {
+  color: #444;
+  text-decoration: none;
+
+  font-size: 9px;
+}
+
+.main-nav a:hover {
+  color: #3d914b;
+}
+
+/* =========================
+   PRICE TICKER
+========================= */
+
+.price-ticker {
+  height: 31px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e9e5;
+
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 28px;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  font-size: 8px;
+  color: #555;
+}
+
+.price-ticker b {
+  color: #333;
+  font-weight: 600;
+}
+
+.price-ticker small {
+  color: #e05252;
+  font-size: 7px;
+  margin-left: 3px;
+}
+
+.price-ticker .up {
+  color: #3d914b;
+}
+
+.price-ticker .down {
+  color: #3d914b;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.signin-main {
+  min-height: 430px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 26px;
+}
+
+.signin-main h1 {
+  margin: 0;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: #252525;
+}
+
+.signin-subtitle {
+  margin: 6px 0 16px;
+
+  color: #858585;
+  font-size: 8px;
+}
+
+/* =========================
+   SIGN IN CARD
+========================= */
+
+.signin-card {
+  width: 228px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e6e1;
+  border-radius: 9px;
+
+  padding: 14px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.signin-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-card label {
+  margin-bottom: 5px;
+
+  color: #444;
+
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.signin-card input {
+  width: 100%;
+  height: 25px;
+
+  border: 1px solid #e0e5e0;
+  border-radius: 5px;
+
+  padding: 0 8px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #333;
+
+  font-size: 8px;
+
+  margin-bottom: 11px;
+}
+
+.signin-card input:focus {
+  border-color: #3d914b;
+}
+
+.signin-card input::placeholder {
+  color: #999;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message {
+  margin: -3px 0 9px;
+
+  color: #d64545;
+
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+/* =========================
+   SUBMIT BUTTON
+========================= */
+
+.submit-button {
+  width: 100%;
+  height: 25px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: #3d914b;
+  color: white;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s;
+}
+
+.submit-button:hover {
+  background: #337d40;
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.divider {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin: 11px 0;
+
+  color: #888;
+
+  font-size: 7px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+
+  flex: 1;
+
+  height: 1px;
+
+  background: #e4e7e4;
+}
+
+.divider span {
+  white-space: nowrap;
+}
+
+/* =========================
+   SOCIAL BUTTONS
+========================= */
+
+.social-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.social-buttons button {
+  flex: 1;
+
+  height: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e5e1;
+  border-radius: 5px;
+
+  color: #444;
+
+  font-size: 7px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+}
+
+.social-buttons button:hover {
+  background: #f8faf8;
+}
+
+.google-icon {
+  font-size: 10px;
+  font-weight: bold;
+  color: #4285f4;
+}
+
+.github-icon {
+  font-size: 8px;
+  color: #222;
+}
+
+/* =========================
+   SIGN UP TEXT
+========================= */
+
+.signup-text {
+  text-align: center;
+
+  margin: 11px 0 0;
+
+  font-size: 7px;
+
+  color: #777;
+}
+
+.signup-text a {
+  color: #3d914b;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   BACK HOME
+========================= */
+
+.back-home {
+  margin-top: 17px;
+
+  font-size: 7px;
+
+  color: #999;
+}
+
+.back-home a {
+  color: #999;
+  text-decoration: none;
+}
+
+.back-home a:hover {
+  color: #3d914b;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.signin-footer {
+  min-height: 37px;
+
+  background: #ffffff;
+
+  border-top: 1px solid #e3e7e3;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 11%;
+
+  color: #777;
+
+  font-size: 7px;
+}
+
+.signin-footer p {
+  margin: 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .signin-header {
+    padding: 0 20px;
+  }
+
+  .main-nav {
+    gap: 18px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0 20px;
+  }
+
+  .price-ticker {
+    justify-content: flex-start;
+    padding-left: 20px;
+  }
+
+  .signin-footer {
+    padding: 10px 20px;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 450px) {
+  .header-right {
+    gap: 8px;
+  }
+
+  .signin-link {
+    font-size: 9px;
+  }
+
+  .signup-button {
+    padding: 7px 10px;
+    font-size: 9px;
+  }
+
+  .signin-card {
+    width: calc(100% - 40px);
+    max-width: 228px;
+  }
+}
