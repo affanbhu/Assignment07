@@ -1,0 +1,612 @@
+/* =========================================
+   PRODUCT PAGE
+========================================= */
+
+.product-page {
+  min-height: 100vh;
+  background: #f1f6f2;
+  padding: 20px 0 80px;
+  color: #202b25;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.product-container {
+  width: 75%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+
+/* =========================================
+   BREADCRUMB
+========================================= */
+
+.product-breadcrumb {
+  margin-bottom: 22px;
+
+  font-size: 10px;
+  line-height: 14px;
+
+  color: #68716c;
+}
+
+.product-breadcrumb span {
+  margin-right: 7px;
+}
+
+.product-breadcrumb .breadcrumb-arrow {
+  color: #a0a8a3;
+  margin-right: 7px;
+}
+
+.product-breadcrumb .breadcrumb-current {
+  color: #4d5851;
+}
+
+
+/* =========================================
+   PRODUCT HEADER
+========================================= */
+
+.product-header {
+  width: 100%;
+
+  min-height: 118px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e8e3;
+
+  border-radius: 13px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   PRODUCT MAIN
+========================================= */
+
+.product-main {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+
+.product-image {
+  width: 56px;
+  height: 56px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f1f5f1;
+
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =========================================
+   PRODUCT INFORMATION
+========================================= */
+
+.product-info {
+  min-width: 0;
+}
+
+.product-info h1 {
+  margin: 0;
+
+  font-size: 21px;
+  line-height: 25px;
+
+  font-weight: 700;
+
+  color: #202b25;
+}
+
+.product-info .product-unit {
+  margin: 2px 0 0;
+
+  font-size: 9px;
+  line-height: 12px;
+
+  color: #747d78;
+}
+
+.product-info .change-text {
+  margin: 4px 0 0;
+
+  font-size: 8px;
+  line-height: 11px;
+
+  color: #747d78;
+}
+
+.change-description {
+  color: #525c56;
+}
+
+.price-up {
+  color: #e34444;
+}
+
+.price-down {
+  color: #159447;
+}
+
+.price-flat {
+  color: #69736d;
+}
+
+
+/* =========================================
+   CURRENT PRICE
+========================================= */
+
+.current-price {
+  min-width: 80px;
+
+  padding: 9px 14px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #f1f5f1;
+
+  text-align: center;
+
+  box-sizing: border-box;
+}
+
+.current-price-label {
+  display: block;
+
+  font-size: 8px;
+  line-height: 10px;
+
+  color: #7a837e;
+}
+
+.current-price-value {
+  display: block;
+
+  margin-top: 1px;
+
+  font-size: 26px;
+  line-height: 27px;
+
+  font-weight: 700;
+
+  color: #202b25;
+}
+
+.current-price-unit {
+  display: block;
+
+  margin-top: 1px;
+
+  font-size: 8px;
+  line-height: 10px;
+
+  color: #777f7a;
+}
+
+.current-price-change {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 7px;
+  line-height: 9px;
+
+  font-weight: 600;
+}
+
+.current-price-change.up {
+  color: #e34444;
+}
+
+.current-price-change.down {
+  color: #159447;
+}
+
+.current-price-change.flat {
+  color: #69736d;
+}
+
+
+/* =========================================
+   MAIN PRICE SECTION
+========================================= */
+
+.price-section {
+  width: 100%;
+
+  margin-top: 16px;
+
+  padding: 15px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e8e3;
+
+  border-radius: 13px;
+
+  box-sizing: border-box;
+}
+
+.price-section h2 {
+  margin: 0 0 9px;
+
+  font-size: 12px;
+  line-height: 16px;
+
+  font-weight: 700;
+
+  color: #26322c;
+}
+
+
+/* =========================================
+   SUMMARY GRID
+========================================= */
+
+.summary-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 8px;
+}
+
+
+/* =========================================
+   SUMMARY CARD
+========================================= */
+
+.summary-card {
+  min-height: 68px;
+
+  padding: 10px;
+
+  border: 1px solid #e0e7e2;
+
+  border-radius: 11px;
+
+  box-sizing: border-box;
+}
+
+.summary-label {
+  display: block;
+
+  font-size: 8px;
+  line-height: 10px;
+
+  color: #737c77;
+}
+
+.summary-price {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 17px;
+  line-height: 20px;
+
+  font-weight: 700;
+}
+
+.summary-price.minimum {
+  color: #259653;
+}
+
+.summary-price.maximum {
+  color: #e5534b;
+}
+
+.summary-price.average {
+  color: #259653;
+}
+
+.summary-description {
+  margin: 2px 0 0;
+
+  font-size: 7px;
+  line-height: 9px;
+
+  color: #737c77;
+}
+
+
+/* =========================================
+   MARKET TITLE
+========================================= */
+
+.market-title {
+  margin-top: 19px !important;
+  margin-bottom: 3px !important;
+
+  font-size: 12px !important;
+  line-height: 16px !important;
+}
+
+.market-description {
+  margin: 0 0 8px;
+
+  font-size: 7px;
+  line-height: 10px;
+
+  color: #858d87;
+}
+
+
+/* =========================================
+   MARKET TABLE
+========================================= */
+
+.market-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  border: 1px solid #e0e7e2;
+
+  border-radius: 10px;
+}
+
+.market-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 9px;
+
+  background: #fbfdfb;
+}
+
+.market-table th {
+  padding: 8px 9px;
+
+  text-align: left;
+
+  background: #fafcfb;
+
+  color: #737c77;
+
+  font-size: 8px;
+  line-height: 11px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.market-table td {
+  padding: 8px 9px;
+
+  border-top: 1px solid #e3e8e5;
+
+  color: #404a45;
+
+  font-size: 9px;
+  line-height: 11px;
+
+  white-space: nowrap;
+}
+
+.market-table tbody tr:nth-child(even) {
+  background: #f4f8f5;
+}
+
+.market-table tbody tr:hover {
+  background: #eef5f0;
+}
+
+.market-table td:first-child {
+  color: #26322c;
+}
+
+.market-table td:last-child,
+.market-table th:last-child {
+  text-align: right;
+}
+
+
+/* =========================================
+   NO MARKET DATA
+========================================= */
+
+.no-market-data {
+  padding: 20px;
+
+  border: 1px solid #e0e7e2;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  background: #fafcfb;
+}
+
+.no-market-data p {
+  margin: 0;
+
+  font-size: 9px;
+
+  color: #737c77;
+}
+
+
+/* =========================================
+   NOT FOUND
+========================================= */
+
+.product-not-found {
+  width: 75%;
+  max-width: 1100px;
+
+  margin: 50px auto;
+
+  padding: 40px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e8e3;
+
+  border-radius: 13px;
+
+  text-align: center;
+}
+
+.product-not-found h1 {
+  margin: 0 0 8px;
+
+  font-size: 22px;
+}
+
+.product-not-found p {
+  margin: 0;
+
+  font-size: 12px;
+
+  color: #737c77;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .product-container {
+    width: 90%;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+  .product-page {
+    padding-top: 15px;
+  }
+
+  .product-container {
+    width: 92%;
+  }
+
+  .product-header {
+    align-items: stretch;
+
+    gap: 12px;
+
+    padding: 12px;
+  }
+
+  .product-main {
+    gap: 10px;
+  }
+
+  .product-info h1 {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .current-price {
+    align-self: flex-end;
+
+    min-width: 90px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    min-height: 62px;
+  }
+
+  .market-table {
+    min-width: 560px;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 450px) {
+  .product-container {
+    width: 94%;
+  }
+
+  .product-header {
+    flex-direction: column;
+  }
+
+  .product-main {
+    width: 100%;
+  }
+
+  .current-price {
+    align-self: flex-end;
+  }
+
+  .product-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .product-image img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .product-info h1 {
+    font-size: 17px;
+  }
+
+  .price-section {
+    padding: 12px;
+  }
+}
