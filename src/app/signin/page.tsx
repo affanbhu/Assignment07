@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import "./signin.css";
 
@@ -13,13 +14,11 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [socialLoading, setSocialLoading] = useState("");
 
   const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoading(true);
-    setError("");
 
     try {
       const { error } = await authClient.signIn.email({
@@ -29,25 +28,41 @@ export default function SignInPage() {
       });
 
       if (error) {
-        setError(error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়");
-        setLoading(false);
+        toast.error(error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়");
         return;
       }
 
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
       router.push("/");
       router.refresh();
     } catch {
-      setError("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+      toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+    } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    setSocialLoading(provider);
+
+    try {
+      const { error } = await authClient.signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || `${provider} দিয়ে সাইন ইন করা যায়নি।`);
+        setSocialLoading("");
+      }
+    } catch {
+      toast.error(`${provider} দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।`);
+      setSocialLoading("");
     }
   };
 
   return (
     <div className="signin-page">
-      {/* Header */}
-      
-
-      {/* Main */}
       <main className="signin-main">
         <h1>সাইন ইন</h1>
 
@@ -57,79 +72,71 @@ export default function SignInPage() {
 
         <div className="signin-card">
           <form onSubmit={handleSignIn}>
-            {/* Email */}
             <label htmlFor="email">ইমেইল</label>
-
             <input
               id="email"
               type="email"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               required
             />
 
-            {/* Password */}
             <label htmlFor="password">পাসওয়ার্ড</label>
-
             <input
               id="password"
               type="password"
               placeholder="আপনার পাসওয়ার্ড"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               required
             />
 
-            {/* Error Message */}
-            {error && <p className="error-message">{error}</p>}
-
-            {/* Sign In Button */}
             <button
               type="submit"
               className="submit-button"
-              disabled={loading}
+              disabled={loading || socialLoading !== ""}
             >
               {loading ? "প্রবেশ করা হচ্ছে..." : "সাইন ইন"}
             </button>
           </form>
 
-          {/* Divider */}
           <div className="divider">
             <span>অথবা</span>
           </div>
 
-          {/* Social Buttons */}
           <div className="social-buttons">
             <button
               type="button"
-              onClick={() =>
-                alert("Google login এখনো সেটআপ করা হয়নি।")
-              }
+              disabled={loading || socialLoading !== ""}
+              onClick={() => handleSocialSignIn("google")}
             >
               <span className="google-icon">G</span>
-              Google দিয়ে সাইন ইন করুন
+              {socialLoading === "google"
+                ? "Google-এ নিয়ে যাওয়া হচ্ছে..."
+                : "Google দিয়ে সাইন ইন করুন"}
             </button>
 
             <button
               type="button"
-              onClick={() =>
-                alert("GitHub login এখনো সেটআপ করা হয়নি।")
-              }
+              disabled={loading || socialLoading !== ""}
+              onClick={() => handleSocialSignIn("github")}
             >
               <span className="github-icon">●</span>
-              GitHub দিয়ে সাইন ইন করুন
+              {socialLoading === "github"
+                ? "GitHub-এ নিয়ে যাওয়া হচ্ছে..."
+                : "GitHub দিয়ে সাইন ইন করুন"}
             </button>
           </div>
 
-          {/* Sign Up Link */}
           <p className="signup-text">
             অ্যাকাউন্ট নেই?{" "}
             <Link href="/signup">সাইন আপ করুন</Link>
           </p>
         </div>
 
-        {/* Back to Home */}
         <p className="back-home">
           ← <Link href="/">হোম পেজে ফিরে যান</Link>
         </p>
