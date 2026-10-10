@@ -1,8 +1,7 @@
 
-import { Suspense } from "react";
+import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import ConditionalLayout from "@/components/ConditionalLayout";
 
 export const metadata: Metadata = {
   title: "বাজার দর",
@@ -17,13 +16,7 @@ export default function RootLayout({
   return (
     <html lang="bn">
       <body>
-        <Suspense fallback={<div className="h-[120px] bg-white" />}>
-          <Navbar />
-        </Suspense>
-
-        {children}
-
-        <Footer />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );

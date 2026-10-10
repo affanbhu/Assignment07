@@ -1,8 +1,7 @@
 
 import Link from "next/link";
+import { Suspense } from "react";
 import "./product.css";
-
-export const instant = false;
 
 type Market = {
   market: string;
@@ -46,13 +45,12 @@ async function getProducts(): Promise<Product[]> {
   return response.json();
 }
 
-export default async function ProductDetailPage({
+async function ProductDetailContent({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
   const products = await getProducts();
 
   const product = products.find(
@@ -103,14 +101,14 @@ export default async function ProductDetailPage({
       ? "আজ দাম কমেছে"
       : "আজ দামে কোনো পরিবর্তন নেই";
 
-  const registerUrl = `/register?next=${encodeURIComponent(
+  // Redirect users to Sign In before checkout.
+  const signInUrl = `/signin?next=${encodeURIComponent(
     `/checkout?product=${product.slug}`
   )}`;
 
   return (
     <main className="product-page">
       <div className="product-container">
-
         {/* Breadcrumb */}
         <div className="product-breadcrumb">
           <Link href="/">হোম</Link>
@@ -125,7 +123,6 @@ export default async function ProductDetailPage({
         {/* Product Header */}
         <section className="product-header">
           <div className="product-main">
-
             <div className="product-image">
               <img
                 src={product.image}
@@ -191,10 +188,10 @@ export default async function ProductDetailPage({
           </div>
         </section>
 
-        {/* Buy Button */}
+        {/* Buy Button: Sign In First */}
         <div className="product-buy-section">
           <Link
-            href={registerUrl}
+            href={signInUrl}
             className="buy-product-button"
           >
             কিনতে চাই
@@ -202,7 +199,7 @@ export default async function ProductDetailPage({
           </Link>
 
           <p>
-            পণ্যটি কিনতে আপনার অ্যাকাউন্ট তৈরি করুন অথবা লগইন করুন।
+            পণ্যটি কিনতে সাইন ইন করুন অথবা নতুন অ্যাকাউন্ট তৈরি করুন।
           </p>
         </div>
 
@@ -215,9 +212,11 @@ export default async function ProductDetailPage({
               <span className="summary-label">
                 সর্বনিম্ন দাম
               </span>
+
               <strong className="summary-price minimum">
                 ৳{minimumPrice}
               </strong>
+
               <p className="summary-description">
                 সবচেয়ে কম বাজারে
               </p>
@@ -227,9 +226,11 @@ export default async function ProductDetailPage({
               <span className="summary-label">
                 সর্বাধিক দাম
               </span>
+
               <strong className="summary-price maximum">
                 ৳{maximumPrice}
               </strong>
+
               <p className="summary-description">
                 সবচেয়ে বেশি বাজারে
               </p>
@@ -239,9 +240,11 @@ export default async function ProductDetailPage({
               <span className="summary-label">
                 গড় দাম
               </span>
+
               <strong className="summary-price average">
                 ৳{averagePrice}
               </strong>
+
               <p className="summary-description">
                 গড় বাজারদর
               </p>
@@ -283,9 +286,11 @@ export default async function ProductDetailPage({
                         <td>
                           <strong>{market.market}</strong>
                         </td>
+
                         <td>{market.division}</td>
                         <td>৳{market.min}</td>
                         <td>৳{market.max}</td>
+
                         <td>
                           <strong>৳{marketAverage}</strong>
                         </td>
@@ -305,5 +310,25 @@ export default async function ProductDetailPage({
         </section>
       </div>
     </main>
+  );
+}
+
+export default function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  return (
+    <Suspense
+      fallback={
+        <main className="product-page">
+          <div className="product-container">
+            <p>পণ্যের তথ্য লোড হচ্ছে...</p>
+          </div>
+        </main>
+      }
+    >
+      <ProductDetailContent params={params} />
+    </Suspense>
   );
 }
