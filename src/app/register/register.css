@@ -1,0 +1,215 @@
+
+/* Registration page background */
+.register-page {
+  min-height: 520px;
+  padding: 28px 16px 64px;
+  background: #f1f6f2;
+  color: #202b25;
+  box-sizing: border-box;
+}
+
+.register-page * {
+  box-sizing: border-box;
+}
+
+/* Heading */
+.register-content {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.register-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.register-heading h1 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.5;
+  font-weight: 750;
+  color: #202b25;
+}
+
+.register-heading p {
+  max-width: 330px;
+  margin: 3px auto 0;
+  color: #818982;
+  font-size: 9px;
+  line-height: 1.7;
+}
+
+/* White form card */
+.register-card {
+  width: 100%;
+  padding: 15px 14px 13px;
+  background: #fbfdfb;
+  border: 1px solid #e3eae4;
+  border-radius: 10px;
+  box-shadow: 0 2px 7px rgb(25 50 30 / 2%);
+}
+
+/* Form fields */
+.register-field {
+  margin-bottom: 9px;
+}
+
+.register-field label {
+  display: block;
+  margin-bottom: 4px;
+  color: #303a33;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.register-field input {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #e4eae5;
+  border-radius: 7px;
+  background: #fbfdfb;
+  color: #27322b;
+  font-family: inherit;
+  font-size: 10px;
+  outline: none;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.register-field input::placeholder {
+  color: #a0a8a2;
+}
+
+.register-field input:focus {
+  border-color: #159447;
+  box-shadow: 0 0 0 2px rgb(21 148 71 / 9%);
+}
+
+/* Green registration button */
+.register-submit {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  margin-top: 2px;
+  padding: 8px 12px;
+  border: 1px solid #008940;
+  border-radius: 6px;
+  background: #008e43;
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 0 2px 3px rgb(0 80 35 / 15%);
+  transition: background 150ms;
+}
+
+.register-submit:hover {
+  background: #007c39;
+}
+
+/* Form feedback */
+.register-message {
+  margin: 8px 0 0;
+  color: #25834a;
+  font-size: 9px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Divider */
+.register-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 13px 0 12px;
+  color: #858d87;
+  font-size: 8px;
+}
+
+.register-divider::before,
+.register-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e7ece8;
+}
+
+/* Google and GitHub buttons */
+.social-register {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.social-button {
+  display: flex;
+  min-width: 0;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 5px;
+  border: 1px solid #e3e9e4;
+  border-radius: 6px;
+  background: #fff;
+  color: #303a33;
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.social-button:hover {
+  background: #f4f8f5;
+}
+
+.google-mark {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4285f4;
+}
+
+/* Login link */
+.register-login {
+  margin: 13px 0 0;
+  text-align: center;
+  font-size: 8px;
+  color: #858d87;
+}
+
+.register-login a {
+  color: #008e43;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-login a:hover {
+  text-decoration: underline;
+}
+
+/* Small screens */
+@media (max-width: 380px) {
+  .register-page {
+    padding: 24px 14px 48px;
+  }
+
+  .register-heading h1 {
+    font-size: 19px;
+  }
+
+  .register-card {
+    padding: 13px 11px;
+  }
+
+  .social-register {
+    grid-template-columns: 1fr;
+  }
+
+  .social-button {
+    font-size: 10px;
+  }
+}

@@ -1,3 +1,5 @@
+
+import Link from "next/link";
 import "./product.css";
 
 export const instant = false;
@@ -63,14 +65,11 @@ export default async function ProductDetailPage({
         <div className="product-not-found">
           <h1>Product Not Found</h1>
           <p>এই পণ্যটি খুঁজে পাওয়া যায়নি।</p>
+          <Link href="/">হোম পেজে ফিরে যান</Link>
         </div>
       </main>
     );
   }
-
-  /* -----------------------------
-     PRICE CALCULATIONS
-  ----------------------------- */
 
   const minimumPrice =
     product.markets?.length > 0
@@ -97,10 +96,6 @@ export default async function ProductDetailPage({
         )
       : product.today;
 
-  /* -----------------------------
-     PRICE CHANGE TEXT
-  ----------------------------- */
-
   const changeText =
     product.change.dir === "up"
       ? "আজ দাম বেড়েছে"
@@ -108,72 +103,44 @@ export default async function ProductDetailPage({
       ? "আজ দাম কমেছে"
       : "আজ দামে কোনো পরিবর্তন নেই";
 
+  const registerUrl = `/register?next=${encodeURIComponent(
+    `/checkout?product=${product.slug}`
+  )}`;
+
   return (
     <main className="product-page">
-
       <div className="product-container">
 
-        {/* =========================
-            BREADCRUMB
-        ========================= */}
-
+        {/* Breadcrumb */}
         <div className="product-breadcrumb">
-
-          <span>হোম</span>
-
-          <span className="breadcrumb-arrow">
-            ›
-          </span>
-
-          <span>
-            {product.categoryNameBn}
-          </span>
-
-          <span className="breadcrumb-arrow">
-            ›
-          </span>
-
+          <Link href="/">হোম</Link>
+          <span className="breadcrumb-arrow">›</span>
+          <span>{product.categoryNameBn}</span>
+          <span className="breadcrumb-arrow">›</span>
           <span className="breadcrumb-current">
             {product.nameBn}
           </span>
-
         </div>
 
-
-        {/* =========================
-            PRODUCT HEADER
-        ========================= */}
-
+        {/* Product Header */}
         <section className="product-header">
-
           <div className="product-main">
 
-            {/* Product Image */}
-
             <div className="product-image">
-
               <img
                 src={product.image}
                 alt={product.nameBn}
               />
-
             </div>
 
-
-            {/* Product Information */}
-
             <div className="product-info">
-
-              <h1>
-                {product.nameBn}
-              </h1>
+              <h1>{product.nameBn}</h1>
 
               <p className="product-unit">
                 প্রতি {product.unit}
               </p>
 
               <p className="change-text">
-
                 {product.change.dir === "up" && (
                   <span className="price-up">
                     ↑ {product.change.pct}%
@@ -193,21 +160,14 @@ export default async function ProductDetailPage({
                 )}
 
                 <span className="change-description">
-                  {" "}
-                  {changeText}
+                  {" "}{changeText}
                 </span>
-
               </p>
-
             </div>
-
           </div>
 
-
           {/* Current Price */}
-
           <div className="current-price">
-
             <span className="current-price-label">
               আজকের দাম
             </span>
@@ -224,97 +184,71 @@ export default async function ProductDetailPage({
               className={`current-price-change ${product.change.dir}`}
             >
               {product.change.dir === "up" && "▲"}
-
               {product.change.dir === "down" && "▼"}
-
               {product.change.dir === "flat" && "—"}
-
-              {" "}
-              {product.change.pct}%
+              {" "}{product.change.pct}%
             </span>
-
           </div>
-
         </section>
 
+        {/* Buy Button */}
+        <div className="product-buy-section">
+          <Link
+            href={registerUrl}
+            className="buy-product-button"
+          >
+            কিনতে চাই
+            <span aria-hidden="true"> →</span>
+          </Link>
 
-        {/* =========================
-            PRICE SECTION
-        ========================= */}
+          <p>
+            পণ্যটি কিনতে আপনার অ্যাকাউন্ট তৈরি করুন অথবা লগইন করুন।
+          </p>
+        </div>
 
+        {/* Price Summary */}
         <section className="price-section">
-
-          {/* Price Summary */}
-
-          <h2>
-            দামের সারসংক্ষেপ
-          </h2>
+          <h2>দামের সারসংক্ষেপ</h2>
 
           <div className="summary-grid">
-
-            {/* Minimum */}
-
             <div className="summary-card">
-
               <span className="summary-label">
                 সর্বনিম্ন দাম
               </span>
-
               <strong className="summary-price minimum">
                 ৳{minimumPrice}
               </strong>
-
               <p className="summary-description">
                 সবচেয়ে কম বাজারে
               </p>
-
             </div>
 
-
-            {/* Maximum */}
-
             <div className="summary-card">
-
               <span className="summary-label">
                 সর্বাধিক দাম
               </span>
-
               <strong className="summary-price maximum">
                 ৳{maximumPrice}
               </strong>
-
               <p className="summary-description">
                 সবচেয়ে বেশি বাজারে
               </p>
-
             </div>
 
-
-            {/* Average */}
-
             <div className="summary-card">
-
               <span className="summary-label">
                 গড় দাম
               </span>
-
               <strong className="summary-price average">
                 ৳{averagePrice}
               </strong>
-
               <p className="summary-description">
                 গড় বাজারদর
               </p>
-
             </div>
-
           </div>
 
-
-          {/* =========================
-              MARKET PRICES
-          ========================= */}
-
+          {/* Market Prices */}
           <h2 className="market-title">
             বাজারভিত্তিক আজকের দাম
           </h2>
@@ -323,105 +257,53 @@ export default async function ProductDetailPage({
             বিভিন্ন বাজারে এই পণ্যের বর্তমান দাম
           </p>
 
-
           {product.markets?.length > 0 ? (
-
             <div className="market-table-wrapper">
-
               <table className="market-table">
-
                 <thead>
-
                   <tr>
-
-                    <th>
-                      বাজার
-                    </th>
-
-                    <th>
-                      বিভাগ
-                    </th>
-
-                    <th>
-                      সর্বনিম্ন
-                    </th>
-
-                    <th>
-                      সর্বাধিক
-                    </th>
-
-                    <th>
-                      গড়
-                    </th>
-
+                    <th>বাজার</th>
+                    <th>বিভাগ</th>
+                    <th>সর্বনিম্ন</th>
+                    <th>সর্বাধিক</th>
+                    <th>গড়</th>
                   </tr>
-
                 </thead>
 
-
                 <tbody>
-
                   {product.markets.map((market) => {
-
-                    const marketAverage =
-                      Math.round(
-                        (market.min + market.max) / 2
-                      );
-
-                    return (
-                      <tr key={`${market.market}-${market.division}`}>
-
-                        <td>
-                          <strong>
-                            {market.market}
-                          </strong>
-                        </td>
-
-                        <td>
-                          {market.division}
-                        </td>
-
-                        <td>
-                          ৳{market.min}
-                        </td>
-
-                        <td>
-                          ৳{market.max}
-                        </td>
-
-                        <td>
-                          <strong>
-                            ৳{marketAverage}
-                          </strong>
-                        </td>
-
-                      </tr>
+                    const marketAverage = Math.round(
+                      (market.min + market.max) / 2
                     );
 
+                    return (
+                      <tr
+                        key={`${market.market}-${market.division}`}
+                      >
+                        <td>
+                          <strong>{market.market}</strong>
+                        </td>
+                        <td>{market.division}</td>
+                        <td>৳{market.min}</td>
+                        <td>৳{market.max}</td>
+                        <td>
+                          <strong>৳{marketAverage}</strong>
+                        </td>
+                      </tr>
+                    );
                   })}
-
                 </tbody>
-
               </table>
-
             </div>
-
           ) : (
-
             <div className="no-market-data">
-
               <p>
                 এই পণ্যের বাজারভিত্তিক তথ্য পাওয়া যায়নি।
               </p>
-
             </div>
-
           )}
-
         </section>
-
       </div>
-
     </main>
   );
 }

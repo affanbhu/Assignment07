@@ -1,18 +1,18 @@
-/* =========================================
-   PRODUCT PAGE
-========================================= */
+
 
 .product-page {
   min-height: 100vh;
-  background: #f1f6f2;
-  padding: 20px 0 80px;
+  padding: 20px 0 90px;
+  background: #f0f5f1;
   color: #202b25;
+  box-sizing: border-box;
+}
+
+.product-page * {
+  box-sizing: border-box;
 }
 
 
-/* =========================================
-   MAIN CONTAINER
-========================================= */
 
 .product-container {
   width: 75%;
@@ -21,26 +21,24 @@
 }
 
 
-/* =========================================
-   BREADCRUMB
-========================================= */
 
 .product-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
   margin-bottom: 22px;
-
   font-size: 10px;
   line-height: 14px;
-
   color: #68716c;
 }
 
 .product-breadcrumb span {
-  margin-right: 7px;
+  margin: 0;
 }
 
 .product-breadcrumb .breadcrumb-arrow {
   color: #a0a8a3;
-  margin-right: 7px;
 }
 
 .product-breadcrumb .breadcrumb-current {
@@ -48,79 +46,50 @@
 }
 
 
-/* =========================================
-   PRODUCT HEADER
-========================================= */
 
 .product-header {
   width: 100%;
-
-  min-height: 118px;
-
+  min-height: 120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  gap: 18px;
   padding: 14px;
-
-  background: #ffffff;
-
-  border: 1px solid #e1e8e3;
-
+  background: #fbfdfb;
+  border: 1px solid #e1e9e3;
   border-radius: 13px;
-
-  box-sizing: border-box;
 }
 
 
-/* =========================================
-   PRODUCT MAIN
-========================================= */
 
 .product-main {
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   min-width: 0;
 }
 
 
-/* =========================================
-   PRODUCT IMAGE
-========================================= */
 
 .product-image {
   width: 56px;
   height: 56px;
-
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 10px;
-
-  background: #f1f5f1;
-
   overflow: hidden;
+  border-radius: 11px;
+  background: #f0f5f1;
 }
 
 .product-image img {
+  display: block;
   width: 42px;
   height: 42px;
-
   object-fit: contain;
-
-  display: block;
 }
 
-
-/* =========================================
-   PRODUCT INFORMATION
-========================================= */
 
 .product-info {
   min-width: 0;
@@ -128,31 +97,25 @@
 
 .product-info h1 {
   margin: 0;
-
-  font-size: 21px;
-  line-height: 25px;
-
-  font-weight: 700;
-
   color: #202b25;
+  font-size: 21px;
+  line-height: 1.35;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .product-info .product-unit {
-  margin: 2px 0 0;
-
-  font-size: 9px;
-  line-height: 12px;
-
+  margin: 3px 0 0;
   color: #747d78;
+  font-size: 9px;
+  line-height: 13px;
 }
 
 .product-info .change-text {
-  margin: 4px 0 0;
-
-  font-size: 8px;
-  line-height: 11px;
-
+  margin: 5px 0 0;
   color: #747d78;
+  font-size: 8px;
+  line-height: 12px;
 }
 
 .change-description {
@@ -172,70 +135,48 @@
 }
 
 
-/* =========================================
-   CURRENT PRICE
-========================================= */
-
 .current-price {
-  min-width: 80px;
-
-  padding: 9px 14px;
-
+  min-width: 82px;
+  flex-shrink: 0;
+  padding: 11px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   border-radius: 11px;
-
-  background: #f1f5f1;
-
+  background: #f0f5f1;
   text-align: center;
-
-  box-sizing: border-box;
 }
 
 .current-price-label {
   display: block;
-
-  font-size: 8px;
-  line-height: 10px;
-
   color: #7a837e;
+  font-size: 8px;
+  line-height: 11px;
 }
 
 .current-price-value {
   display: block;
-
-  margin-top: 1px;
-
-  font-size: 26px;
-  line-height: 27px;
-
-  font-weight: 700;
-
+  margin-top: 2px;
   color: #202b25;
+  font-size: 25px;
+  line-height: 29px;
+  font-weight: 700;
 }
 
 .current-price-unit {
   display: block;
-
-  margin-top: 1px;
-
-  font-size: 8px;
-  line-height: 10px;
-
+  margin-top: 2px;
   color: #777f7a;
+  font-size: 8px;
+  line-height: 11px;
 }
 
 .current-price-change {
   display: block;
-
-  margin-top: 3px;
-
-  font-size: 7px;
-  line-height: 9px;
-
+  margin-top: 4px;
+  font-size: 8px;
+  line-height: 11px;
   font-weight: 600;
 }
 
@@ -252,88 +193,58 @@
 }
 
 
-/* =========================================
-   MAIN PRICE SECTION
-========================================= */
 
 .price-section {
   width: 100%;
-
   margin-top: 16px;
-
   padding: 15px;
-
-  background: #ffffff;
-
-  border: 1px solid #e1e8e3;
-
+  background: #fbfdfb;
+  border: 1px solid #e1e9e3;
   border-radius: 13px;
-
-  box-sizing: border-box;
 }
 
 .price-section h2 {
-  margin: 0 0 9px;
-
-  font-size: 12px;
-  line-height: 16px;
-
-  font-weight: 700;
-
+  margin: 0 0 10px;
   color: #26322c;
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 700;
 }
 
 
-/* =========================================
-   SUMMARY GRID
-========================================= */
 
 .summary-grid {
   display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
 }
 
-
-/* =========================================
-   SUMMARY CARD
-========================================= */
-
 .summary-card {
-  min-height: 68px;
-
-  padding: 10px;
-
-  border: 1px solid #e0e7e2;
-
+  min-width: 0;
+  min-height: 70px;
+  padding: 11px;
+  border: 1px solid #e0e8e2;
   border-radius: 11px;
-
-  box-sizing: border-box;
+  background: #fbfdfb;
 }
 
 .summary-label {
   display: block;
-
-  font-size: 8px;
-  line-height: 10px;
-
   color: #737c77;
+  font-size: 8px;
+  line-height: 11px;
 }
 
 .summary-price {
   display: block;
-
-  margin-top: 2px;
-
+  margin-top: 3px;
   font-size: 17px;
-  line-height: 20px;
-
+  line-height: 21px;
   font-weight: 700;
 }
 
-.summary-price.minimum {
+.summary-price.minimum,
+.summary-price.average {
   color: #259653;
 }
 
@@ -341,102 +252,71 @@
   color: #e5534b;
 }
 
-.summary-price.average {
-  color: #259653;
-}
-
 .summary-description {
-  margin: 2px 0 0;
-
-  font-size: 7px;
-  line-height: 9px;
-
+  margin: 3px 0 0;
   color: #737c77;
+  font-size: 7px;
+  line-height: 10px;
 }
 
-
-/* =========================================
-   MARKET TITLE
-========================================= */
 
 .market-title {
   margin-top: 19px !important;
-  margin-bottom: 3px !important;
-
+  margin-bottom: 4px !important;
   font-size: 12px !important;
-  line-height: 16px !important;
+  line-height: 17px !important;
 }
 
 .market-description {
-  margin: 0 0 8px;
-
-  font-size: 7px;
-  line-height: 10px;
-
+  margin: 0 0 9px;
   color: #858d87;
+  font-size: 8px;
+  line-height: 12px;
 }
 
 
-/* =========================================
-   MARKET TABLE
-========================================= */
 
 .market-table-wrapper {
   width: 100%;
-
   overflow-x: auto;
-
   border: 1px solid #e0e7e2;
-
-  border-radius: 10px;
+  border-radius: 11px;
+  background: #fbfdfb;
+  scrollbar-width: thin;
 }
 
 .market-table {
   width: 100%;
-
   border-collapse: collapse;
-
   font-size: 9px;
-
-  background: #fbfdfb;
 }
 
 .market-table th {
-  padding: 8px 9px;
-
-  text-align: left;
-
+  padding: 10px 11px;
   background: #fafcfb;
-
   color: #737c77;
-
+  text-align: left;
   font-size: 8px;
-  line-height: 11px;
-
+  line-height: 12px;
   font-weight: 600;
-
   white-space: nowrap;
 }
 
 .market-table td {
-  padding: 8px 9px;
-
+  padding: 9px 11px;
   border-top: 1px solid #e3e8e5;
-
   color: #404a45;
-
   font-size: 9px;
-  line-height: 11px;
-
+  line-height: 12px;
   white-space: nowrap;
 }
 
 .market-table tbody tr:nth-child(even) {
-  background: #f4f8f5;
+  background: #f0f5f1;
 }
 
 .market-table tbody tr:hover {
-  background: #eef5f0;
+  background: #eaf2ec;
 }
 
 .market-table td:first-child {
@@ -449,131 +329,126 @@
 }
 
 
-/* =========================================
-   NO MARKET DATA
-========================================= */
 
 .no-market-data {
-  padding: 20px;
-
+  padding: 22px 15px;
   border: 1px solid #e0e7e2;
-
   border-radius: 10px;
-
-  text-align: center;
-
   background: #fafcfb;
+  text-align: center;
 }
 
 .no-market-data p {
   margin: 0;
-
-  font-size: 9px;
-
   color: #737c77;
+  font-size: 9px;
+  line-height: 15px;
 }
 
-
-/* =========================================
-   NOT FOUND
-========================================= */
 
 .product-not-found {
   width: 75%;
   max-width: 1100px;
-
   margin: 50px auto;
-
   padding: 40px;
-
-  background: #ffffff;
-
   border: 1px solid #e1e8e3;
-
   border-radius: 13px;
-
+  background: #fbfdfb;
   text-align: center;
 }
 
 .product-not-found h1 {
   margin: 0 0 8px;
-
   font-size: 22px;
 }
 
 .product-not-found p {
   margin: 0;
-
-  font-size: 12px;
-
   color: #737c77;
+  font-size: 12px;
 }
 
 
-/* =========================================
-   TABLET
-========================================= */
 
 @media (max-width: 900px) {
   .product-container {
     width: 90%;
   }
+
+  .product-not-found {
+    width: 90%;
+  }
 }
 
 
-/* =========================================
-   MOBILE
-========================================= */
-
 @media (max-width: 650px) {
   .product-page {
-    padding-top: 15px;
+    padding: 16px 0 50px;
   }
 
   .product-container {
     width: 92%;
   }
 
+  .product-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 9px;
+  }
+
   .product-header {
-    align-items: stretch;
-
     gap: 12px;
-
     padding: 12px;
   }
 
   .product-main {
-    gap: 10px;
+    gap: 9px;
   }
 
   .product-info h1 {
-    font-size: 18px;
+    font-size: 17px;
     line-height: 22px;
   }
 
   .current-price {
-    align-self: flex-end;
+    min-width: 76px;
+    padding: 9px 8px;
+  }
 
-    min-width: 90px;
+  .current-price-value {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .price-section {
+    margin-top: 13px;
+    padding: 12px;
   }
 
   .summary-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .summary-card {
-    min-height: 62px;
+    min-height: 66px;
+    padding: 8px;
+  }
+
+  .summary-price {
+    font-size: 15px;
   }
 
   .market-table {
-    min-width: 560px;
+    min-width: 530px;
+  }
+
+  .product-not-found {
+    width: 92%;
+    padding: 25px 15px;
   }
 }
 
 
-/* =========================================
-   SMALL MOBILE
-========================================= */
 
 @media (max-width: 450px) {
   .product-container {
@@ -582,6 +457,7 @@
 
   .product-header {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .product-main {
@@ -606,7 +482,20 @@
     font-size: 17px;
   }
 
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    min-height: 60px;
+    padding: 10px;
+  }
+
+  .summary-price {
+    font-size: 16px;
+  }
+
   .price-section {
-    padding: 12px;
+    padding: 11px;
   }
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -20,86 +21,38 @@ export default function SignInPage() {
     setLoading(true);
     setError("");
 
-    const { error } = await authClient.signIn.email({
-      email,
-      password,
-      callbackURL: "/",
-    });
+    try {
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: "/",
+      });
 
-    if (error) {
-      setError(error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়");
+      if (error) {
+        setError(error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়");
+        setLoading(false);
+        return;
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch {
+      setError("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
       setLoading(false);
-      return;
     }
-
-    router.push("/");
-    router.refresh();
   };
 
   return (
     <div className="signin-page">
       {/* Header */}
-      <header className="signin-header">
-        <div className="header-left">
-          <div className="logo-box">ব</div>
-
-          <div className="brand-info">
-            <h2>বাজার দর</h2>
-            <p>বাজারদর, ৬ অক্টোবর, ২০২৬</p>
-          </div>
-        </div>
-
-        <div className="header-right">
-          <Link href="/signin" className="signin-link">
-            সাইন ইন
-          </Link>
-
-          <Link href="/signup" className="signup-button">
-            সাইন আপ
-          </Link>
-        </div>
-      </header>
-
-      {/* Navigation */}
-      <nav className="main-nav">
-        <Link href="/">হোম</Link>
-        <Link href="/">দাম</Link>
-        <Link href="/">বাজার</Link>
-        <Link href="/">মাছ</Link>
-        <Link href="/">মাংস</Link>
-        <Link href="/">শাক-সবজি</Link>
-        <Link href="/">মসলা</Link>
-      </nav>
-
-      {/* Price ticker */}
-      <div className="price-ticker">
-        <span>
-          🥬 কাঁচা মরিচ <b>৪৮০ টাকা/কেজি</b> <small>▲ ৩.২%</small>
-        </span>
-
-        <span>
-          🥔 আলু <b>৩৫ টাকা/কেজি</b> <small className="up">▲ ১.৫%</small>
-        </span>
-
-        <span>
-          🍅 টমেটো <b>১২০ টাকা/কেজি</b> <small>▲ ২.৪%</small>
-        </span>
-
-        <span>
-          🐟 রুই মাছ <b>৪৫০ টাকা/কেজি</b> <small>▲ ১.৮%</small>
-        </span>
-
-        <span>
-          🐔 ব্রয়লার মুরগি <b>২১০ টাকা/কেজি</b> <small className="down">▼ ০.৮%</small>
-        </span>
-      </div>
+      
 
       {/* Main */}
       <main className="signin-main">
-        <h1>অ্যাকাউন্টে প্রবেশ করুন</h1>
+        <h1>সাইন ইন</h1>
 
         <p className="signin-subtitle">
-          আপনার অ্যাকাউন্টে প্রবেশ করতে নিচের তথ্য দিন।
+          বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।
         </p>
 
         <div className="signin-card">
@@ -128,15 +81,16 @@ export default function SignInPage() {
               required
             />
 
+            {/* Error Message */}
             {error && <p className="error-message">{error}</p>}
 
-            {/* Sign in button */}
+            {/* Sign In Button */}
             <button
               type="submit"
               className="submit-button"
               disabled={loading}
             >
-              {loading ? "প্রবেশ করা হচ্ছে..." : "অ্যাকাউন্টে প্রবেশ করুন"}
+              {loading ? "প্রবেশ করা হচ্ছে..." : "সাইন ইন"}
             </button>
           </form>
 
@@ -145,11 +99,13 @@ export default function SignInPage() {
             <span>অথবা</span>
           </div>
 
-          {/* Social buttons */}
+          {/* Social Buttons */}
           <div className="social-buttons">
             <button
               type="button"
-              onClick={() => alert("Google login এখনো সেটআপ করা হয়নি।")}
+              onClick={() =>
+                alert("Google login এখনো সেটআপ করা হয়নি।")
+              }
             >
               <span className="google-icon">G</span>
               Google দিয়ে সাইন ইন করুন
@@ -157,29 +113,27 @@ export default function SignInPage() {
 
             <button
               type="button"
-              onClick={() => alert("GitHub login এখনো সেটআপ করা হয়নি।")}
+              onClick={() =>
+                alert("GitHub login এখনো সেটআপ করা হয়নি।")
+              }
             >
               <span className="github-icon">●</span>
               GitHub দিয়ে সাইন ইন করুন
             </button>
           </div>
 
+          {/* Sign Up Link */}
           <p className="signup-text">
             অ্যাকাউন্ট নেই?{" "}
             <Link href="/signup">সাইন আপ করুন</Link>
           </p>
         </div>
 
+        {/* Back to Home */}
         <p className="back-home">
           ← <Link href="/">হোম পেজে ফিরে যান</Link>
         </p>
       </main>
-
-      {/* Footer */}
-      <footer className="signin-footer">
-        <p>বাজার দর — প্রতিদিনের পণ্যের দাম এক নজরে।</p>
-        <p>কোনো প্রশ্ন থাকলে, বাজার দর-এর সাথে যোগাযোগ করুন।</p>
-      </footer>
     </div>
   );
 }
