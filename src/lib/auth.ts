@@ -1,20 +1,49 @@
 
-import Database from "better-sqlite3";
-import { betterAuth } from "better-auth";
+import "server-only";
 
-const db = new Database("auth.db");
+import { betterAuth } from "better-auth";
+import { MongoClient } from "mongodb";
+import { mongodbAdapter } from "@better-auth/mongo-adapter";
+
+const mongoUri = process.env.MONGODB_URI;
+
+if (!mongoUri) {
+  throw new Error("MONGODB_URI is missing from .env.local");
+}
+
+const client = new MongoClient(mongoUri);
+const db = client.db("bazar_dhor");
+
+const socialProviders = {
+  ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+    ? {
+        google: {
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        },
+      }
+    : {}),
+  ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET
+    ? {
+        github: {
+          clientId: process.env.GITHUB_CLIENT_ID,
+          clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        },
+      }
+    : {}),
+};
 
 export const auth = betterAuth({
-  database: db,
+  database: mongodbAdapter(db, {
+    client,
+  }),
 
   emailAndPassword: {
     enabled: true,
   },
 
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    },
-  },
+  socialProviders,
+
+  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: process.env.BETTER_AUTH_URL,
 });

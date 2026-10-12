@@ -80,7 +80,7 @@ export default function SignUpPage() {
         </h1>
 
         <p className="mt-1 text-sm text-[#7b827b]">
-          বিনা ঝামেলায় নতুন অ্যাকাউন্ট করে সব বিস্তারিত দাম দেখুন।
+          বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন
         </p>
       </header>
 
