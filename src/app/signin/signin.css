@@ -1,162 +1,127 @@
 
-/* =========================
-   GLOBAL
-========================= */
-
-* {
+/* Sign-in page middle section */
+.signin-page {
+  width: 100%;
+  min-height: 438px;
+  padding: 25px 16px 85px;
+  background: #f0f5f1;
+  color: #202b25;
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+.signin-page * {
+  box-sizing: border-box;
 }
-
-.signin-page {
-  min-height: 100vh;
-  background: #f5f8f4;
-  color: #222;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* =========================
-   MAIN SECTION
-========================= */
 
 .signin-main {
-  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 45px 20px;
+  text-align: center;
 }
 
 .signin-main h1 {
   margin: 0;
-  font-size: 34px;
+  color: #202b25;
+  font-size: 18px;
+  line-height: 26px;
   font-weight: 700;
-  color: #252525;
-  text-align: center;
 }
 
 .signin-subtitle {
-  max-width: 450px;
-  margin: 12px 0 30px;
-  color: #777;
-  font-size: 15px;
-  line-height: 1.8;
-  text-align: center;
+  margin: 3px 0 17px;
+  color: #7a837e;
+  font-size: 9px;
+  line-height: 15px;
 }
 
-/* =========================
-   SIGN IN CARD
-========================= */
-
+/* Form card */
 .signin-card {
   width: 100%;
-  max-width: 440px;
-  background: #ffffff;
-  border: 1px solid #e1e6e1;
-  border-radius: 14px;
-  padding: 32px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  max-width: 268px;
+  padding: 16px 15px 14px;
+  background: #fbfdfb;
+  border: 1px solid #e1e9e3;
+  border-radius: 12px;
+  text-align: left;
 }
 
 .signin-card form {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .signin-card label {
-  margin-bottom: 9px;
-  color: #333;
-  font-size: 14px;
+  margin: 0 0 5px;
+  color: #303a34;
+  font-size: 9px;
+  line-height: 13px;
   font-weight: 600;
 }
-
-/* =========================
-   INPUT FIELDS
-========================= */
 
 .signin-card input {
   width: 100%;
-  height: 48px;
-  border: 1px solid #dce3dc;
-  border-radius: 7px;
-  padding: 0 14px;
+  height: 27px;
+  margin: 0 0 10px;
+  padding: 0 9px;
+  border: 1px solid #e0e8e2;
+  border-radius: 6px;
   outline: none;
-  background: #fff;
-  color: #333;
+  background: #fbfdfb;
+  color: #26322c;
   font-family: inherit;
-  font-size: 14px;
-  margin-bottom: 21px;
+  font-size: 9px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.signin-card input:focus {
-  border-color: #3d914b;
-  box-shadow: 0 0 0 3px rgba(61, 145, 75, 0.12);
-}
-
 .signin-card input::placeholder {
-  color: #999;
+  color: #737c77;
+  opacity: 1;
 }
 
-/* =========================
-   ERROR MESSAGE
-========================= */
-
-.error-message {
-  margin: -5px 0 16px;
-  color: #d64545;
-  font-size: 13px;
-  line-height: 1.6;
+.signin-card input:focus {
+  border-color: #07883f;
+  box-shadow: 0 0 0 2px rgb(8 136 63 / 9%);
 }
 
-/* =========================
-   SIGN IN BUTTON
-========================= */
-
+/* Submit button */
 .submit-button {
   width: 100%;
-  min-height: 48px;
-  border: none;
-  border-radius: 7px;
-  background: #3d914b;
+  min-height: 28px;
+  margin-top: 0;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #078b42;
   color: #fff;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 9px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 3px rgb(0 0 0 / 18%);
+  transition: background 0.2s, opacity 0.2s;
 }
 
 .submit-button:hover {
-  background: #337d40;
-}
-
-.submit-button:active {
-  transform: scale(0.99);
+  background: #067638;
 }
 
 .submit-button:disabled {
-  opacity: 0.7;
   cursor: not-allowed;
+  opacity: 0.65;
 }
 
-/* =========================
-   DIVIDER
-========================= */
-
+/* Divider */
 .divider {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 24px 0;
-  color: #888;
-  font-size: 13px;
+  gap: 10px;
+  margin: 12px 0 10px;
+  color: #737c77;
+  font-size: 8px;
+  line-height: 12px;
 }
 
 .divider::before,
@@ -164,186 +129,117 @@ body {
   content: "";
   flex: 1;
   height: 1px;
-  background: #e4e7e4;
+  background: #dfe6e1;
 }
 
 .divider span {
-  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* =========================
-   SOCIAL LOGIN BUTTONS
-========================= */
-
+/* Social login buttons */
 .social-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
 }
 
 .social-buttons button {
-  width: 100%;
-  min-height: 46px;
-  padding: 10px;
-  background: #fff;
-  border: 1px solid #e1e5e1;
-  border-radius: 7px;
-  color: #444;
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
+  min-width: 0;
+  min-height: 27px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 4px;
+  padding: 5px 4px;
+  border: 1px solid #e0e7e2;
+  border-radius: 5px;
+  background: #fbfdfb;
+  color: #26322c;
+  font-family: inherit;
+  font-size: 8px;
+  line-height: 12px;
+  white-space: nowrap;
+  cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
 
 .social-buttons button:hover {
-  background: #f8faf8;
-  border-color: #cbd8cb;
+  background: #f0f5f1;
+  border-color: #cbd8ce;
 }
 
-.google-icon {
-  font-size: 19px;
-  font-weight: bold;
-  color: #4285f4;
+.social-buttons button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Actual SVG logos */
+.google-icon,
+.github-icon {
+  display: block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 .github-icon {
-  font-size: 16px;
-  color: #222;
+  color: #202b25;
 }
 
-/* =========================
-   SIGN UP LINK
-========================= */
-
+/* Sign-up link */
 .signup-text {
+  margin: 11px 0 0;
   text-align: center;
-  margin: 24px 0 0;
-  font-size: 14px;
-  color: #777;
-  line-height: 1.7;
+  color: #606b64;
+  font-size: 9px;
+  line-height: 14px;
 }
 
 .signup-text a {
-  color: #3d914b;
+  color: #078b42;
   text-decoration: none;
-  font-weight: 600;
 }
 
 .signup-text a:hover {
   text-decoration: underline;
 }
 
-/* =========================
-   BACK TO HOME
-========================= */
-
+/* Back to home */
 .back-home {
-  margin: 25px 0 0;
-  font-size: 14px;
-  color: #777;
+  margin: 14px 0 0;
   text-align: center;
+  color: #7a837e;
+  font-size: 9px;
+  line-height: 14px;
 }
 
 .back-home a {
-  color: #777;
+  color: inherit;
   text-decoration: none;
-  transition: color 0.2s;
 }
 
 .back-home a:hover {
-  color: #3d914b;
+  color: #078b42;
 }
 
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 768px) {
-  .signin-main {
-    padding: 40px 24px;
-  }
-
-  .signin-main h1 {
-    font-size: 30px;
-  }
-
-  .signin-subtitle {
-    font-size: 14px;
-    margin-bottom: 25px;
-  }
-
-  .signin-card {
-    max-width: 420px;
-    padding: 28px;
-  }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
+/* Mobile responsive layout */
 @media (max-width: 480px) {
-  .signin-main {
-    padding: 35px 18px;
-  }
-
-  .signin-main h1 {
-    font-size: 27px;
+  .signin-page {
+    min-height: 420px;
+    padding: 25px 12px 55px;
   }
 
   .signin-subtitle {
-    max-width: 340px;
-    font-size: 13px;
-    margin: 10px 0 23px;
+    max-width: 320px;
   }
 
   .signin-card {
-    padding: 24px 20px;
-    border-radius: 11px;
-  }
-
-  .signin-card label {
-    font-size: 13px;
-  }
-
-  .signin-card input {
-    height: 46px;
-    font-size: 14px;
-  }
-
-  .submit-button {
-    min-height: 46px;
+    max-width: 320px;
+    padding: 16px;
   }
 
   .social-buttons button {
-    min-height: 44px;
-    font-size: 12px;
-  }
-
-  .signup-text,
-  .back-home {
-    font-size: 13px;
-  }
-}
-
-/* =========================
-   SMALL MOBILE
-========================= */
-
-@media (max-width: 350px) {
-  .signin-main {
-    padding: 28px 12px;
-  }
-
-  .signin-card {
-    padding: 20px 15px;
-  }
-
-  .signin-main h1 {
-    font-size: 24px;
+    font-size: 8px;
   }
 }
