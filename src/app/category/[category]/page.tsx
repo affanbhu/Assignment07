@@ -1,7 +1,8 @@
-export const instant = false;
 
 import Link from "next/link";
 import "./category.css";
+
+export const instant = false;
 
 type Product = {
   id: number;
@@ -22,43 +23,26 @@ type Product = {
   };
 };
 
-type Category = {
-  id: string;
-  slug: string;
-  nameBn: string;
-  icon: string;
-};
-
-async function getCategory(category: string): Promise<Category> {
-  const response = await fetch(
-    `https://api.abcz.workers.dev/api/bazardor/categories/${category}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch category");
-  }
-
-  return response.json();
-}
-
 async function getCategoryProducts(
   category: string
 ): Promise<Product[]> {
   const response = await fetch(
-    `https://api.abcz.workers.dev/api/bazardor/products?category=${category}`,
-    {
-      cache: "no-store",
-    }
+    `https://openapi.programming-hero.com/api/bazardor/products?category=${encodeURIComponent(category)}`,
+    { cache: "no-store" }
   );
 
   if (!response.ok) {
     throw new Error("Failed to fetch category products");
   }
 
-  return response.json();
+  const result = await response.json();
+  const products = Array.isArray(result) ? result : result.data;
+
+  if (!Array.isArray(products)) {
+    throw new Error("Unexpected product API response");
+  }
+
+  return products;
 }
 
 export default async function CategoryPage({
@@ -67,97 +51,100 @@ export default async function CategoryPage({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-
-  const [categoryInfo, products] = await Promise.all([
-    getCategory(category),
-    getCategoryProducts(category),
-  ]);
+  const products = await getCategoryProducts(category);
+  const categoryInfo = products[0];
 
   return (
     <main className="category-page">
-
-      <section className="category-header">
+      <div className="category-header">
         <div className="category-icon">
-          {categoryInfo.icon}
+          {categoryInfo?.categoryIcon || "🍚"}
         </div>
 
         <div>
-          <h1>{categoryInfo.nameBn}</h1>
+          <h1>{categoryInfo?.categoryNameBn || category}</h1>
           <p>এই ক্যাটাগরির পণ্য ও পরিবর্তন</p>
         </div>
-      </section>
+      </div>
 
-      <section className="filter-bar">
+      <div className="filter-bar">
         <span>সাজান</span>
-
-        <select defaultValue="default">
+        <select defaultValue="default" aria-label="পণ্য সাজান">
           <option value="default">ডিফল্ট</option>
-          <option value="price-low">কম দাম</option>
-          <option value="price-high">বেশি দাম</option>
+          <option value="price-low">দাম: কম থেকে বেশি</option>
+          <option value="price-high">দাম: বেশি থেকে কম</option>
+          <option value="change">দামের পরিবর্তন</option>
         </select>
-      </section>
+      </div>
 
       <p className="product-count">
         মোট {products.length}টি পণ্য দেখানো হচ্ছে
       </p>
 
-      <div className="product-grid">
-        {products.map((product) => (
-          <Link
-            key={product.id}
-            href={`/product/${product.slug}`}
-            className="product-card"
-          >
+      {products.length > 0 ? (
+        <section className="product-grid">
+          {products.map((product) => {
+            const direction = product.change?.dir || "flat";
 
-            <div className="product-top">
+            return (
+              <Link
+                key={product.id}
+                href={`/product/${product.slug}`}
+                className="product-card"
+              >
+                <div className="product-top">
+                  <div className="product-image">
+                    {product.image &&
+                    (product.image.startsWith("https://") ||
+                      product.image.startsWith("http://") ||
+                      product.image.startsWith("/")) ? (
+                      <img
+                        src={product.image}
+                        alt={product.nameBn}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    ) : (
+                      product.image || product.categoryIcon || "🍚"
+                    )}
+                  </div>
 
-              <div className="product-image">
-                <img
-                  src={product.image}
-                  alt={product.nameBn}
-                />
-              </div>
+                  <div className="product-info">
+                    <h2>{product.nameBn}</h2>
+                    <p>প্রতি {product.unit}</p>
+                  </div>
+                </div>
 
-              <div className="product-info">
-                <h2>{product.nameBn}</h2>
-                <p>প্রতি {product.unit}</p>
-              </div>
+                <div className="price-row">
+                  <div>
+                    <span className="price-label">আজকের দাম</span>
+                    <span className="price">
+                      ৳{product.today}
+                      <span className="unit"> /{product.unit}</span>
+                    </span>
+                  </div>
 
-            </div>
-
-            <div className="price-row">
-
-              <div>
-                <span className="price-label">
-                  আজকের দাম
-                </span>
-
-                <div className="price">
-                  ৳{product.today}
-
-                  <span className="unit">
-                    / {product.unit}
+                  <span className={`change ${direction}`}>
+                    {direction === "up"
+                      ? "▲"
+                      : direction === "down"
+                      ? "▼"
+                      : "—"}{" "}
+                    {Math.abs(product.change?.pct ?? 0)}%
                   </span>
                 </div>
-              </div>
-
-              <span
-                className={`change ${product.change.dir}`}
-              >
-                {product.change.dir === "up"
-                  ? "▲"
-                  : product.change.dir === "down"
-                  ? "▼"
-                  : "→"}{" "}
-                {product.change.pct}%
-              </span>
-
-            </div>
-
-          </Link>
-        ))}
-      </div>
-
+              </Link>
+            );
+          })}
+        </section>
+      ) : (
+        <div className="product-grid">
+          <p>এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।</p>
+        </div>
+      )}
     </main>
   );
 }
