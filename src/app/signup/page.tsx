@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import "./signup.css";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -72,159 +73,151 @@ export default function SignUpPage() {
     }
   }
 
-  return (
-    <main className="flex min-h-screen flex-col items-center bg-[#f1f6f1] px-4 py-8 sm:py-10">
-      <header className="mb-5 text-center">
-        <h1 className="text-2xl font-bold tracking-tight text-[#26332a]">
-          অ্যাকাউন্ট তৈরি করুন
-        </h1>
+  const isBusy = loading || socialLoading !== "";
 
-        <p className="mt-1 text-sm text-[#7b827b]">
-          বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন
-        </p>
+  return (
+    <main className="signup-page">
+      <header className="signup-heading">
+        <h1>অ্যাকাউন্ট তৈরি করুন</h1>
+        <p>বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন</p>
       </header>
 
-      <section className="w-full max-w-[440px] rounded-xl border border-[#e0e8e0] bg-[#fcfdfc] p-5 shadow-sm sm:p-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-1 block text-xs font-medium text-[#303a32]"
-            >
-              নাম
-            </label>
-
+      <section className="signup-card">
+        <form onSubmit={handleSubmit} className="signup-form">
+          <div className="signup-field">
+            <label htmlFor="name">নাম</label>
             <input
               id="name"
               type="text"
               placeholder="যেমন: রহিম উদ্দিন"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(event) => setName(event.target.value)}
               autoComplete="name"
               required
-              disabled={loading || socialLoading !== ""}
-              className="h-[42px] w-full rounded-lg border border-[#e0e7e1] bg-transparent px-3 text-sm text-[#28332b] outline-none transition placeholder:text-[#929992] focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10"
+              disabled={isBusy}
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-xs font-medium text-[#303a32]"
-            >
-              ইমেইল
-            </label>
-
+          <div className="signup-field">
+            <label htmlFor="email">ইমেইল</label>
             <input
               id="email"
               type="email"
               placeholder="you@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               autoComplete="email"
               required
-              disabled={loading || socialLoading !== ""}
-              className="h-[42px] w-full rounded-lg border border-[#e0e7e1] bg-transparent px-3 text-sm text-[#28332b] outline-none transition placeholder:text-[#929992] focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10"
+              disabled={isBusy}
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-1 block text-xs font-medium text-[#303a32]"
-            >
-              পাসওয়ার্ড
-            </label>
-
+          <div className="signup-field">
+            <label htmlFor="password">পাসওয়ার্ড</label>
             <input
               id="password"
               type="password"
               placeholder="কমপক্ষে ৮ অক্ষর"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
               autoComplete="new-password"
               minLength={8}
               required
-              disabled={loading || socialLoading !== ""}
-              className="h-[42px] w-full rounded-lg border border-[#e0e7e1] bg-transparent px-3 text-sm text-[#28332b] outline-none transition placeholder:text-[#929992] focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10"
+              disabled={isBusy}
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="mb-1 block text-xs font-medium text-[#303a32]"
-            >
-              পাসওয়ার্ড নিশ্চিত করুন
-            </label>
-
+          <div className="signup-field">
+            <label htmlFor="confirmPassword">পাসওয়ার্ড নিশ্চিত করুন</label>
             <input
               id="confirmPassword"
               type="password"
               placeholder="আবার লিখুন"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(event) => setConfirmPassword(event.target.value)}
               autoComplete="new-password"
               required
-              disabled={loading || socialLoading !== ""}
-              className="h-[42px] w-full rounded-lg border border-[#e0e7e1] bg-transparent px-3 text-sm text-[#28332b] outline-none transition placeholder:text-[#929992] focus:border-[#079447] focus:ring-2 focus:ring-[#079447]/10"
+              disabled={isBusy}
             />
           </div>
 
           <button
             type="submit"
-            disabled={loading || socialLoading !== ""}
-            className="w-full rounded-lg bg-[#078d43] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#067737] focus:outline-none focus:ring-2 focus:ring-[#078d43]/30 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            className="signup-submit"
+            disabled={isBusy}
           >
             {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "অ্যাকাউন্ট তৈরি করুন"}
           </button>
         </form>
 
-        <div className="my-4 flex items-center gap-3">
-          <div className="h-px flex-1 bg-[#e1e7e2]" />
-          <span className="text-xs text-[#737b74]">অথবা</span>
-          <div className="h-px flex-1 bg-[#e1e7e2]" />
+        <div className="signup-divider">
+          <span>অথবা</span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="signup-socials">
           <button
             type="button"
-            disabled={loading || socialLoading !== ""}
+            disabled={isBusy}
             onClick={() => handleSocialSignUp("google")}
-            className="flex min-h-[42px] items-center justify-center gap-1.5 rounded-lg border border-[#e0e7e1] bg-white px-2 py-2 text-xs font-medium text-[#303a32] transition hover:bg-[#f4f7f4] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {socialLoading === "google"
-              ? "Google খুলছে..."
-              : "Google দিয়ে চালিয়ে যান"}
+            <svg
+              className="google-icon"
+              viewBox="0 0 48 48"
+              aria-hidden="true"
+            >
+              <path
+                fill="#4285F4"
+                d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-15Z"
+              />
+              <path
+                fill="#34A853"
+                d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.6-5.1c-1.8 1.2-4 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M12.6 27.6a12 12 0 0 1 0-7.2v-5.3H5.8a20 20 0 0 0 0 17.8l6.8-5.3Z"
+              />
+              <path
+                fill="#EA4335"
+                d="M24 11.9c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 5.9 29.5 4 24 4A20 20 0 0 0 5.8 15.1l6.8 5.3c1.6-4.9 6.1-8.5 11.4-8.5Z"
+              />
+            </svg>
+
+            <span>
+              {socialLoading === "google"
+                ? "Google খুলছে..."
+                : "Google দিয়ে চালিয়ে যান"}
+            </span>
           </button>
 
           <button
             type="button"
-            disabled={loading || socialLoading !== ""}
+            disabled={isBusy}
             onClick={() => handleSocialSignUp("github")}
-            className="flex min-h-[42px] items-center justify-center gap-1.5 rounded-lg border border-[#e0e7e1] bg-white px-2 py-2 text-xs font-medium text-[#303a32] transition hover:bg-[#f4f7f4] focus:outline-none focus:ring-2 focus:ring-[#079447]/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {socialLoading === "github"
-              ? "GitHub খুলছে..."
-              : "GitHub দিয়ে চালিয়ে যান"}
+            <svg
+              className="github-icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .1.83 1.96 3.25 1.96.78 0 1.4-.3 1.88-.78.08-.6.31-1.02.57-1.26-2.48-.28-5.08-1.24-5.08-5.52 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.06 1.15a10.7 10.7 0 0 1 5.57 0c2.12-1.45 3.06-1.15 3.06-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.29-2.6 5.24-5.09 5.52.32.28.6.82.6 1.65v2.45c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z" />
+            </svg>
+
+            <span>
+              {socialLoading === "github"
+                ? "GitHub খুলছে..."
+                : "GitHub দিয়ে চালিয়ে যান"}
+            </span>
           </button>
         </div>
 
-        <p className="mt-4 text-center text-xs text-[#687169]">
-          অ্যাকাউন্ট আছে?{" "}
-          <Link
-            href="/signin"
-            className="font-semibold text-[#078d43] hover:underline"
-          >
-            সাইন ইন করুন
-          </Link>
+        <p className="signup-account">
+          অ্যাকাউন্ট আছে? <Link href="/signin">সাইন ইন করুন</Link>
         </p>
       </section>
 
-      <Link
-        href="/"
-        className="mt-5 text-xs text-[#7b827b] transition hover:text-[#078d43]"
-      >
+      <Link href="/" className="signup-back">
         ← হোম পেজে ফিরে যান
       </Link>
     </main>
