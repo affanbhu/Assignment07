@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -9,22 +10,32 @@ type Product = {
   emoji: string;
   name: string;
   unit: string;
-  price: string;
-  change: string;
+  price: string | number;
+  change: string | number;
   type: "up" | "down" | "flat";
 };
 
-function parseBengaliPrice(value: string) {
+function toEnglishDigits(value: string | number): string {
   const bengaliDigits = "০১২৩৪৫৬৭৮৯";
   const englishDigits = "0123456789";
 
-  const normalized = value
-    .replace(/[০-৯]/g, (digit) => {
-      return englishDigits[bengaliDigits.indexOf(digit)];
-    })
-    .replace(/[^\d.]/g, "");
+  return String(value).replace(/[০-৯]/g, (digit) => {
+    return englishDigits[bengaliDigits.indexOf(digit)];
+  });
+}
 
-  return Number(normalized);
+function parseBengaliPrice(value: string | number): number {
+  const normalized = toEnglishDigits(value).replace(/[^\d.]/g, "");
+  return Number(normalized) || 0;
+}
+
+function parseChange(value: string | number): number {
+  const normalized = toEnglishDigits(value).replace(/[^\d.]/g, "");
+  return Number(normalized) || 0;
+}
+
+function formatPrice(value: string | number): string {
+  return `${parseBengaliPrice(value).toLocaleString("bn-BD")} টাকা`;
 }
 
 function ChangeBadge({
@@ -32,12 +43,12 @@ function ChangeBadge({
   value,
 }: {
   type: Product["type"];
-  value: string;
+  value: string | number;
 }) {
   if (type === "up") {
     return (
       <span className="rounded-full bg-[#fff0ef] px-2 py-1 text-[10px] font-semibold text-[#e5534b]">
-        ▲ {value}
+        ▲ {String(value)}
       </span>
     );
   }
@@ -45,7 +56,7 @@ function ChangeBadge({
   if (type === "down") {
     return (
       <span className="rounded-full bg-[#eaf8ef] px-2 py-1 text-[10px] font-semibold text-[#259653]">
-        ▼ {value}
+        ▼ {String(value)}
       </span>
     );
   }
@@ -58,9 +69,7 @@ function ChangeBadge({
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const slug = product.name
-    .toLowerCase()
-    .replace(/\s+/g, "-");
+  const slug = product.name.toLowerCase().replace(/\s+/g, "-");
 
   return (
     <Link
@@ -76,28 +85,19 @@ function ProductCard({ product }: { product: Product }) {
           <h3 className="truncate text-sm font-semibold text-[#202820]">
             {product.name}
           </h3>
-
-          <p className="mt-1 text-xs text-[#7a8279]">
-            {product.unit}
-          </p>
+          <p className="mt-1 text-xs text-[#7a8279]">{product.unit}</p>
         </div>
       </div>
 
       <div className="mt-4 flex items-end justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-xs text-[#737b73]">
-            আজকের দাম
-          </p>
-
+          <p className="text-xs text-[#737b73]">আজকের দাম</p>
           <p className="mt-1 text-sm font-bold text-[#1b211c]">
-            {product.price}
+            {formatPrice(product.price)}
           </p>
         </div>
 
-        <ChangeBadge
-          type={product.type}
-          value={product.change}
-        />
+        <ChangeBadge type={product.type} value={product.change} />
       </div>
     </Link>
   );
@@ -105,12 +105,9 @@ function ProductCard({ product }: { product: Product }) {
 
 function ProductGrid({ products }: { products: Product[] }) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-        />
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
@@ -123,7 +120,12 @@ export default function Home() {
 
   useEffect(() => {
     fetch("/products.json")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Could not load products.json");
+        }
+        return response.json();
+      })
       .then((data: Product[]) => {
         setProducts(data);
         setLoading(false);
@@ -137,22 +139,14 @@ export default function Home() {
   const risingProducts = useMemo(() => {
     return [...products]
       .filter((product) => product.type === "up")
-      .sort(
-        (a, b) =>
-          Number(b.change.replace("%", "")) -
-          Number(a.change.replace("%", ""))
-      )
+      .sort((a, b) => parseChange(b.change) - parseChange(a.change))
       .slice(0, 6);
   }, [products]);
 
   const fallingProducts = useMemo(() => {
     return [...products]
       .filter((product) => product.type === "down")
-      .sort(
-        (a, b) =>
-          Number(b.change.replace("%", "")) -
-          Number(a.change.replace("%", ""))
-      )
+      .sort((a, b) => parseChange(b.change) - parseChange(a.change))
       .slice(0, 6);
   }, [products]);
 
@@ -161,17 +155,13 @@ export default function Home() {
 
     if (sort === "low") {
       return productList.sort(
-        (a, b) =>
-          parseBengaliPrice(a.price) -
-          parseBengaliPrice(b.price)
+        (a, b) => parseBengaliPrice(a.price) - parseBengaliPrice(b.price)
       );
     }
 
     if (sort === "high") {
       return productList.sort(
-        (a, b) =>
-          parseBengaliPrice(b.price) -
-          parseBengaliPrice(a.price)
+        (a, b) => parseBengaliPrice(b.price) - parseBengaliPrice(a.price)
       );
     }
 
@@ -185,48 +175,32 @@ export default function Home() {
       <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
         {loading ? (
           <div className="py-12 text-center">
-            <p className="text-sm text-[#6f776f]">
-              পণ্য লোড হচ্ছে...
-            </p>
+            <p className="text-sm text-[#6f776f]">পণ্য লোড হচ্ছে...</p>
           </div>
         ) : (
           <>
-            {/* Section A — Top 6 Risers */}
             <section>
               <h2 className="mb-3 text-sm font-bold text-[#263028]">
-                <span className="text-[#e64d45]">▲</span>{" "}
-                আজ দাম বেড়েছে
+                <span className="text-[#e64d45]">▲</span> আজ দাম বেড়েছে
               </h2>
-
               <ProductGrid products={risingProducts} />
             </section>
 
-            {/* Section B — Top 6 Fallers */}
             <section className="mt-8">
               <h2 className="mb-3 text-sm font-bold text-[#263028]">
-                <span className="text-[#249553]">▼</span>{" "}
-                আজ দাম কমেছে
+                <span className="text-[#249553]">▼</span> আজ দাম কমেছে
               </h2>
-
               <ProductGrid products={fallingProducts} />
             </section>
 
-            {/* Section C — All Products */}
-            <section
-              id="সব-পণ্য"
-              className="mt-10 scroll-mt-6"
-            >
+            <section id="সব-পণ্য" className="mt-10 scroll-mt-6">
               <div className="mb-4">
-                <h2 className="text-sm font-bold text-[#263028]">
-                  সব পণ্য
-                </h2>
-
+                <h2 className="text-sm font-bold text-[#263028]">সব পণ্য</h2>
                 <p className="mt-1 text-xs text-[#858d85]">
                   বাজারের সকল পণ্যের বর্তমান দাম
                 </p>
               </div>
 
-              {/* C1 — Sort Dropdown */}
               <div className="mb-4 flex items-center justify-start gap-2 sm:justify-end">
                 <span className="text-xs font-medium text-[#596159]">
                   সাজান
@@ -235,16 +209,12 @@ export default function Home() {
                 <div className="relative w-full sm:w-auto">
                   <select
                     value={sort}
-                    onChange={(e) => setSort(e.target.value)}
+                    onChange={(event) => setSort(event.target.value)}
                     className="w-full appearance-none rounded-md border border-[#dfe5df] bg-white px-3 py-2 pr-8 text-xs text-[#596159] outline-none sm:w-auto"
                   >
                     <option value="default">ডিফল্ট</option>
-                    <option value="low">
-                      দাম: কম থেকে বেশি
-                    </option>
-                    <option value="high">
-                      দাম: বেশি থেকে কম
-                    </option>
+                    <option value="low">দাম: কম থেকে বেশি</option>
+                    <option value="high">দাম: বেশি থেকে কম</option>
                   </select>
 
                   <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#596159]">
