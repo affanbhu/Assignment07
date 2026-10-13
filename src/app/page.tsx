@@ -47,7 +47,7 @@ function ChangeBadge({
 }) {
   if (type === "up") {
     return (
-      <span className="rounded-full bg-[#fff0ef] px-2 py-1 text-[10px] font-semibold text-[#e5534b]">
+      <span className="shrink-0 rounded-full bg-[#eaf8ef] px-2 py-1 text-[10px] font-semibold text-[#259653]">
         ▲ {String(value)}
       </span>
     );
@@ -55,26 +55,24 @@ function ChangeBadge({
 
   if (type === "down") {
     return (
-      <span className="rounded-full bg-[#eaf8ef] px-2 py-1 text-[10px] font-semibold text-[#259653]">
+      <span className="shrink-0 rounded-full bg-[#fff0ef] px-2 py-1 text-[10px] font-semibold text-[#e5534b]">
         ▼ {String(value)}
       </span>
     );
   }
 
   return (
-    <span className="rounded-full bg-[#eef1ee] px-2 py-1 text-[10px] font-semibold text-[#747a74]">
+    <span className="shrink-0 rounded-full bg-[#eef1ee] px-2 py-1 text-[10px] font-semibold text-[#747a74]">
       — ০.০%
     </span>
   );
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const slug = product.name.toLowerCase().replace(/\s+/g, "-");
-
   return (
     <Link
-      href={`/product/${slug}`}
-      className="block min-h-[120px] w-full rounded-xl border border-[#e2e8e3] bg-[#fbfdfb] p-3 shadow-sm transition hover:shadow-md"
+      href={`/product/${product.id}`}
+      className="block min-h-[120px] w-full min-w-0 rounded-xl border border-[#e2e8e3] bg-[#fbfdfb] p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f1f4ef] text-lg">
@@ -105,7 +103,7 @@ function ProductCard({ product }: { product: Product }) {
 
 function ProductGrid({ products }: { products: Product[] }) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
@@ -117,6 +115,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [sort, setSort] = useState("default");
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     fetch("/products.json")
@@ -124,14 +123,18 @@ export default function Home() {
         if (!response.ok) {
           throw new Error("Could not load products.json");
         }
+
         return response.json();
       })
       .then((data: Product[]) => {
         setProducts(data);
-        setLoading(false);
+        setLoadError(false);
       })
       .catch((error) => {
         console.error("Failed to load products:", error);
+        setLoadError(true);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -177,37 +180,52 @@ export default function Home() {
           <div className="py-12 text-center">
             <p className="text-sm text-[#6f776f]">পণ্য লোড হচ্ছে...</p>
           </div>
+        ) : loadError ? (
+          <div className="py-12 text-center">
+            <p className="text-sm text-red-600">
+              পণ্য লোড করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।
+            </p>
+          </div>
         ) : (
           <>
             <section>
               <h2 className="mb-3 text-sm font-bold text-[#263028]">
-                <span className="text-[#e64d45]">▲</span> আজ দাম বেড়েছে
+                <span className="text-[#259653]">▲</span> আজ দাম বেড়েছে
               </h2>
+
               <ProductGrid products={risingProducts} />
             </section>
 
             <section className="mt-8">
               <h2 className="mb-3 text-sm font-bold text-[#263028]">
-                <span className="text-[#249553]">▼</span> আজ দাম কমেছে
+                <span className="text-[#e5534b]">▼</span> আজ দাম কমেছে
               </h2>
+
               <ProductGrid products={fallingProducts} />
             </section>
 
             <section id="সব-পণ্য" className="mt-10 scroll-mt-6">
               <div className="mb-4">
-                <h2 className="text-sm font-bold text-[#263028]">সব পণ্য</h2>
+                <h2 className="text-sm font-bold text-[#263028]">
+                  সব পণ্য
+                </h2>
+
                 <p className="mt-1 text-xs text-[#858d85]">
                   বাজারের সকল পণ্যের বর্তমান দাম
                 </p>
               </div>
 
               <div className="mb-4 flex items-center justify-start gap-2 sm:justify-end">
-                <span className="text-xs font-medium text-[#596159]">
+                <label
+                  htmlFor="product-sort"
+                  className="shrink-0 text-xs font-medium text-[#596159]"
+                >
                   সাজান
-                </span>
+                </label>
 
                 <div className="relative w-full sm:w-auto">
                   <select
+                    id="product-sort"
                     value={sort}
                     onChange={(event) => setSort(event.target.value)}
                     className="w-full appearance-none rounded-md border border-[#dfe5df] bg-white px-3 py-2 pr-8 text-xs text-[#596159] outline-none sm:w-auto"
