@@ -1,284 +1,6 @@
 
-// import Link from "next/link";
-// import { Suspense } from "react";
-// import "./product.css";
-
-// type Market = {
-//   market: string;
-//   division: string;
-//   min: number;
-//   max: number;
-// };
-
-// type Product = {
-//   id: number;
-//   slug: string;
-//   nameBn: string;
-//   category: string;
-//   categoryNameBn: string;
-//   categoryIcon: string;
-//   unit: string;
-//   image: string;
-//   today: number;
-//   yesterday: number;
-//   lastWeek: number;
-//   lastMonth: number;
-//   change: {
-//     dir: "up" | "down" | "flat";
-//     pct: number;
-//   };
-//   markets?: Market[];
-// };
-
-// const API_URL = "https://api.abcz.workers.dev/api/bazardor";
-
-// async function getProducts(): Promise<Product[]> {
-//   const response = await fetch(`${API_URL}/products`, {
-//     cache: "no-store",
-//   });
-
-//   if (!response.ok) {
-//     throw new Error(`Product API failed: ${response.status}`);
-//   }
-
-//   const result: unknown = await response.json();
-
-//   // Support either a direct array or a common wrapped API response.
-//   if (Array.isArray(result)) {
-//     return result as Product[];
-//   }
-
-//   if (result && typeof result === "object") {
-//     const data = (result as { data?: unknown }).data;
-//     const products = (result as { products?: unknown }).products;
-
-//     if (Array.isArray(data)) return data as Product[];
-//     if (Array.isArray(products)) return products as Product[];
-//   }
-
-//   throw new Error("Unexpected product API response format.");
-// }
-
-// function formatPrice(value: number) {
-//   return new Intl.NumberFormat("bn-BD", {
-//     maximumFractionDigits: 2,
-//   }).format(value);
-// }
-
-// async function ProductDetailContent({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) {
-//   const { slug } = await params;
-//   const products = await getProducts();
-
-//   const product = products.find(
-//     (item) => String(item.slug) === slug || String(item.id) === slug
-//   );
-
-//   if (!product) {
-//     return (
-//       <main className="product-page">
-//         <div className="product-not-found">
-//           <h1>পণ্যটি পাওয়া যায়নি</h1>
-//           <p>এই পণ্যের তথ্য খুঁজে পাওয়া যায়নি।</p>
-//           <Link href="/">হোম পেজে ফিরে যান</Link>
-//         </div>
-//       </main>
-//     );
-//   }
-
-//   const markets = product.markets ?? [];
-
-//   const minimumPrice = markets.length
-//     ? Math.min(...markets.map((market) => market.min))
-//     : product.today;
-
-//   const maximumPrice = markets.length
-//     ? Math.max(...markets.map((market) => market.max))
-//     : product.today;
-
-//   const averagePrice = markets.length
-//     ? Math.round(
-//         markets.reduce(
-//           (total, market) => total + (market.min + market.max) / 2,
-//           0
-//         ) / markets.length
-//       )
-//     : product.today;
-
-//   const direction = product.change?.dir ?? "flat";
-//   const percentage = Math.abs(product.change?.pct ?? 0);
-
-//   const changeText =
-//     direction === "up"
-//       ? "আজকের দাম বেড়েছে"
-//       : direction === "down"
-//         ? "আজকের দাম কমেছে"
-//         : "আজ দামে কোনো পরিবর্তন নেই";
-
-//   const imageIsUrl =
-//     typeof product.image === "string" &&
-//     /^(https?:\/\/|\/)/.test(product.image);
-
-//   return (
-//     <main className="product-page">
-//       <div className="product-container">
-//         <nav className="product-breadcrumb" aria-label="Breadcrumb">
-//           <Link href="/">হোম</Link>
-//           <span className="breadcrumb-arrow">›</span>
-//           <Link href={`/category/${product.category}`}>
-//             {product.categoryNameBn || product.category}
-//           </Link>
-//           <span className="breadcrumb-arrow">›</span>
-//           <span className="breadcrumb-current">{product.nameBn}</span>
-//         </nav>
-
-//         <section className="product-header">
-//           <div className="product-main">
-//             <div className="product-image">
-//               {imageIsUrl ? (
-//                 <img src={product.image} alt={product.nameBn} />
-//               ) : (
-//                 <span>{product.image || product.categoryIcon || "🍚"}</span>
-//               )}
-//             </div>
-
-//             <div className="product-info">
-//               <h1>{product.nameBn}</h1>
-//               <p className="product-unit">প্রতি {product.unit}</p>
-//               <p className="change-text">
-//                 <span className={`price-${direction}`}>
-//                   {direction === "up"
-//                     ? "↑"
-//                     : direction === "down"
-//                       ? "↓"
-//                       : "→"}{" "}
-//                   {formatPrice(percentage)}%
-//                 </span>
-//                 <span className="change-description"> {changeText}</span>
-//               </p>
-//             </div>
-//           </div>
-
-//           <div className="current-price">
-//             <span className="current-price-label">আজকের দাম</span>
-//             <span className="current-price-value">
-//               {formatPrice(product.today)}
-//             </span>
-//             <span className="current-price-unit">
-//               টাকা / {product.unit}
-//             </span>
-//             <span className={`current-price-change ${direction}`}>
-//               {direction === "up"
-//                 ? "▲"
-//                 : direction === "down"
-//                   ? "▼"
-//                   : "—"}{" "}
-//               {formatPrice(percentage)}%
-//             </span>
-//           </div>
-//         </section>
-
-//         <section className="price-section">
-//           <h2>দামের সারসংক্ষেপ</h2>
-
-//           <div className="summary-grid">
-//             <div className="summary-card">
-//               <span className="summary-label">সর্বনিম্ন দাম</span>
-//               <strong className="summary-price minimum">
-//                 ৳{formatPrice(minimumPrice)}
-//               </strong>
-//               <p className="summary-description">সবচেয়ে কম বাজারদর</p>
-//             </div>
-
-//             <div className="summary-card">
-//               <span className="summary-label">সর্বাধিক দাম</span>
-//               <strong className="summary-price maximum">
-//                 ৳{formatPrice(maximumPrice)}
-//               </strong>
-//               <p className="summary-description">সবচেয়ে বেশি বাজারদর</p>
-//             </div>
-
-//             <div className="summary-card">
-//               <span className="summary-label">গড় দাম</span>
-//               <strong className="summary-price average">
-//                 ৳{formatPrice(averagePrice)}
-//               </strong>
-//               <p className="summary-description">গড় বাজারদর</p>
-//             </div>
-//           </div>
-
-//           <h2 className="market-title">বাজারভিত্তিক আজকের দাম</h2>
-//           <p className="market-description">
-//             বিভিন্ন বাজারে এই পণ্যের বর্তমান দাম
-//           </p>
-
-//           {markets.length > 0 ? (
-//             <div className="market-table-wrapper">
-//               <table className="market-table">
-//                 <thead>
-//                   <tr>
-//                     <th>বাজার</th>
-//                     <th>বিভাগ</th>
-//                     <th>সর্বনিম্ন</th>
-//                     <th>সর্বাধিক</th>
-//                     <th>গড়</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {markets.map((market, index) => (
-//                     <tr key={`${market.market}-${market.division}-${index}`}>
-//                       <td><strong>{market.market}</strong></td>
-//                       <td>{market.division}</td>
-//                       <td>৳{formatPrice(market.min)}</td>
-//                       <td>৳{formatPrice(market.max)}</td>
-//                       <td>
-//                         <strong>
-//                           ৳{formatPrice((market.min + market.max) / 2)}
-//                         </strong>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
-//           ) : (
-//             <div className="no-market-data">
-//               <p>
-//                 এই পণ্যের বাজারভিত্তিক তথ্য API থেকে পাওয়া যায়নি।
-//               </p>
-//             </div>
-//           )}
-//         </section>
-//       </div>
-//     </main>
-//   );
-// }
-
-// export default function ProductDetailPage({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) {
-//   return (
-//     <Suspense
-//       fallback={
-//         <main className="product-page">
-//           <div className="product-container">
-//             <p>পণ্যের তথ্য লোড হচ্ছে...</p>
-//           </div>
-//         </main>
-//       }
-//     >
-//       <ProductDetailContent params={params} />
-//     </Suspense>
-//   );
-// }
-
-
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import "./product.css";
 
 export const instant = false;
@@ -291,7 +13,7 @@ type Market = {
 };
 
 type Product = {
-  id: number;
+  id: number | string;
   slug: string;
   nameBn: string;
   category: string;
@@ -310,7 +32,8 @@ type Product = {
   markets?: Market[];
 };
 
-const API_URL = "https://api.abcz.workers.dev/api/bazardor";
+const API_URL =
+  "https://openapi.programming-hero.com/api/bazardor";
 
 async function getProducts(): Promise<Product[]> {
   const response = await fetch(`${API_URL}/products`, {
@@ -328,13 +51,23 @@ async function getProducts(): Promise<Product[]> {
   }
 
   if (result && typeof result === "object") {
-    const data = (result as { data?: unknown }).data;
-    const products = (result as { products?: unknown }).products;
-    const results = (result as { results?: unknown }).results;
+    const payload = result as {
+      data?: unknown;
+      products?: unknown;
+      results?: unknown;
+    };
 
-    if (Array.isArray(data)) return data as Product[];
-    if (Array.isArray(products)) return products as Product[];
-    if (Array.isArray(results)) return results as Product[];
+    if (Array.isArray(payload.data)) {
+      return payload.data as Product[];
+    }
+
+    if (Array.isArray(payload.products)) {
+      return payload.products as Product[];
+    }
+
+    if (Array.isArray(payload.results)) {
+      return payload.results as Product[];
+    }
   }
 
   throw new Error("Unexpected product API response format.");
@@ -346,12 +79,14 @@ function formatPrice(value: number): string {
   }).format(value);
 }
 
-function ProductNotFound() {
+function ProductLoadError() {
   return (
     <main className="product-page">
       <div className="product-not-found">
-        <h1>পণ্যটি পাওয়া যায়নি</h1>
-        <p>এই পণ্যের তথ্য খুঁজে পাওয়া যায়নি।</p>
+        <h1>পণ্যের তথ্য লোড করা যায়নি</h1>
+        <p>
+          ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।
+        </p>
         <Link href="/">হোম পেজে ফিরে যান</Link>
       </div>
     </main>
@@ -371,24 +106,17 @@ export default async function ProductDetailPage({
     products = await getProducts();
   } catch (error) {
     console.error("Failed to load product details:", error);
-
-    return (
-      <main className="product-page">
-        <div className="product-not-found">
-          <h1>পণ্যের তথ্য লোড করা যায়নি</h1>
-          <p>ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</p>
-          <Link href="/">হোম পেজে ফিরে যান</Link>
-        </div>
-      </main>
-    );
+    return <ProductLoadError />;
   }
 
   const product = products.find(
-    (item) => String(item.slug) === slug || String(item.id) === slug
+    (item) =>
+      String(item.slug) === slug ||
+      String(item.id) === slug
   );
 
   if (!product) {
-    return <ProductNotFound />;
+    notFound();
   }
 
   const markets = product.markets ?? [];
@@ -405,7 +133,8 @@ export default async function ProductDetailPage({
 
   const averagePrice = markets.length
     ? markets.reduce(
-        (total, market) => total + (market.min + market.max) / 2,
+        (total, market) =>
+          total + (market.min + market.max) / 2,
         0
       ) / markets.length
     : product.today;
@@ -424,23 +153,30 @@ export default async function ProductDetailPage({
   return (
     <main className="product-page">
       <div className="product-container">
-        <nav className="product-breadcrumb" aria-label="Breadcrumb">
+        <nav
+          className="product-breadcrumb"
+          aria-label="Breadcrumb"
+        >
           <Link href="/">হোম</Link>
           <span className="breadcrumb-arrow">›</span>
           <Link href={`/category/${product.category}`}>
             {product.categoryNameBn || product.category}
           </Link>
           <span className="breadcrumb-arrow">›</span>
-          <span className="breadcrumb-current">{product.nameBn}</span>
+          <span className="breadcrumb-current">
+            {product.nameBn}
+          </span>
         </nav>
 
-        {/* Product summary */}
         <section className="product-header">
           <div className="product-main">
             <div className="product-image">
               {imageIsUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={product.image} alt={product.nameBn} />
+                <img
+                  src={product.image}
+                  alt={product.nameBn}
+                />
               ) : (
                 <span>
                   {product.image || product.categoryIcon || "🍚"}
@@ -456,7 +192,9 @@ export default async function ProductDetailPage({
                 {product.categoryNameBn || product.category}
               </div>
 
-              <p className="product-unit">প্রতি {product.unit}</p>
+              <p className="product-unit">
+                প্রতি {product.unit}
+              </p>
 
               <p className="change-text">
                 <span className={`price-${direction}`}>
@@ -467,13 +205,17 @@ export default async function ProductDetailPage({
                       : "→"}{" "}
                   {formatPrice(percentage)}%
                 </span>
-                <span className="change-description"> {changeText}</span>
+                <span className="change-description">
+                  {" "}{changeText}
+                </span>
               </p>
             </div>
           </div>
 
           <div className="current-price">
-            <span className="current-price-label">আজকের দাম</span>
+            <span className="current-price-label">
+              আজকের দাম
+            </span>
             <span className="current-price-value">
               ৳{formatPrice(product.today)}
             </span>
@@ -491,25 +233,32 @@ export default async function ProductDetailPage({
           </div>
         </section>
 
-        {/* Price summary */}
         <section className="price-section">
           <h2>দামের সারসংক্ষেপ</h2>
 
           <div className="summary-grid">
             <div className="summary-card">
-              <span className="summary-label">সর্বনিম্ন দাম</span>
+              <span className="summary-label">
+                সর্বনিম্ন দাম
+              </span>
               <strong className="summary-price minimum">
                 ৳{formatPrice(minimumPrice)}
               </strong>
-              <p className="summary-description">সবচেয়ে কম বাজারদর</p>
+              <p className="summary-description">
+                সবচেয়ে কম বাজারদর
+              </p>
             </div>
 
             <div className="summary-card">
-              <span className="summary-label">সর্বাধিক দাম</span>
+              <span className="summary-label">
+                সর্বাধিক দাম
+              </span>
               <strong className="summary-price maximum">
                 ৳{formatPrice(maximumPrice)}
               </strong>
-              <p className="summary-description">সবচেয়ে বেশি বাজারদর</p>
+              <p className="summary-description">
+                সবচেয়ে বেশি বাজারদর
+              </p>
             </div>
 
             <div className="summary-card">
@@ -517,12 +266,15 @@ export default async function ProductDetailPage({
               <strong className="summary-price average">
                 ৳{formatPrice(averagePrice)}
               </strong>
-              <p className="summary-description">গড় বাজারদর</p>
+              <p className="summary-description">
+                গড় বাজারদর
+              </p>
             </div>
           </div>
 
-          {/* Market prices */}
-          <h2 className="market-title">বাজারভিত্তিক আজকের দাম</h2>
+          <h2 className="market-title">
+            বাজারভিত্তিক আজকের দাম
+          </h2>
           <p className="market-description">
             বিভিন্ন বাজারে এই পণ্যের বর্তমান দাম
           </p>
@@ -553,7 +305,10 @@ export default async function ProductDetailPage({
                       <td>৳{formatPrice(market.max)}</td>
                       <td>
                         <strong>
-                          ৳{formatPrice((market.min + market.max) / 2)}
+                          ৳
+                          {formatPrice(
+                            (market.min + market.max) / 2
+                          )}
                         </strong>
                       </td>
                     </tr>

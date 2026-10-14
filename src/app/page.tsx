@@ -83,7 +83,9 @@ function ProductCard({ product }: { product: Product }) {
           <h3 className="truncate text-sm font-semibold text-[#202820]">
             {product.name}
           </h3>
-          <p className="mt-1 text-xs text-[#7a8279]">{product.unit}</p>
+          <p className="mt-1 text-xs text-[#7a8279]">
+            {product.unit}
+          </p>
         </div>
       </div>
 
@@ -101,11 +103,51 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
+function ProductSkeleton() {
+  return (
+    <div
+      className="min-h-[120px] animate-pulse rounded-xl border border-[#e2e8e3] bg-white p-3 shadow-sm"
+      aria-hidden="true"
+    >
+      <div className="flex items-start gap-3">
+        <div className="h-9 w-9 shrink-0 rounded-full bg-[#e8eee8]" />
+
+        <div className="min-w-0 flex-1 space-y-2 pt-1">
+          <div className="h-3 w-3/4 rounded bg-[#e8eee8]" />
+          <div className="h-3 w-1/2 rounded bg-[#eef1ee]" />
+        </div>
+      </div>
+
+      <div className="mt-5 flex items-end justify-between gap-2">
+        <div className="space-y-2">
+          <div className="h-3 w-16 rounded bg-[#eef1ee]" />
+          <div className="h-4 w-24 rounded bg-[#e8eee8]" />
+        </div>
+        <div className="h-6 w-14 rounded-full bg-[#e8eee8]" />
+      </div>
+    </div>
+  );
+}
+
 function ProductGrid({ products }: { products: Product[] }) {
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+
+function ProductGridSkeleton({ count = 8 }: { count?: number }) {
+  return (
+    <div
+      className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      aria-label="পণ্য লোড হচ্ছে"
+      aria-busy="true"
+    >
+      {Array.from({ length: count }, (_, index) => (
+        <ProductSkeleton key={index} />
       ))}
     </div>
   );
@@ -177,8 +219,23 @@ export default function Home() {
 
       <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
         {loading ? (
-          <div className="py-12 text-center">
-            <p className="text-sm text-[#6f776f]">পণ্য লোড হচ্ছে...</p>
+          <div className="space-y-8 py-4">
+            <section>
+              <div className="mb-3 h-4 w-36 animate-pulse rounded bg-[#e2eae2]" />
+              <ProductGridSkeleton count={6} />
+            </section>
+
+            <section>
+              <div className="mb-3 h-4 w-36 animate-pulse rounded bg-[#e2eae2]" />
+              <ProductGridSkeleton count={6} />
+            </section>
+
+            <section>
+              <div className="mb-2 h-4 w-24 animate-pulse rounded bg-[#e2eae2]" />
+              <div className="mb-4 mt-2 h-3 w-56 animate-pulse rounded bg-[#e8eee8]" />
+              <div className="mb-4 h-9 w-48 animate-pulse rounded-md bg-[#e8eee8]" />
+              <ProductGridSkeleton count={8} />
+            </section>
           </div>
         ) : loadError ? (
           <div className="py-12 text-center">
@@ -192,7 +249,6 @@ export default function Home() {
               <h2 className="mb-3 text-sm font-bold text-[#263028]">
                 <span className="text-[#259653]">▲</span> আজ দাম বেড়েছে
               </h2>
-
               <ProductGrid products={risingProducts} />
             </section>
 
@@ -200,7 +256,6 @@ export default function Home() {
               <h2 className="mb-3 text-sm font-bold text-[#263028]">
                 <span className="text-[#e5534b]">▼</span> আজ দাম কমেছে
               </h2>
-
               <ProductGrid products={fallingProducts} />
             </section>
 
@@ -209,7 +264,6 @@ export default function Home() {
                 <h2 className="text-sm font-bold text-[#263028]">
                   সব পণ্য
                 </h2>
-
                 <p className="mt-1 text-xs text-[#858d85]">
                   বাজারের সকল পণ্যের বর্তমান দাম
                 </p>

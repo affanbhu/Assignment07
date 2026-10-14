@@ -1,5 +1,6 @@
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import CategoryProductList from "./CategoryProductList";
 
 type Product = {
@@ -35,9 +36,7 @@ async function getCategoryProducts(
 ): Promise<Product[]> {
   const response = await fetch(
     `${API_BASE}/products?category=${encodeURIComponent(category)}`,
-    {
-      cache: "no-store",
-    }
+    { cache: "no-store" }
   );
 
   if (!response.ok) {
@@ -60,13 +59,17 @@ async function getCategoryDetails(
 ): Promise<Category | null> {
   const response = await fetch(
     `${API_BASE}/categories/${encodeURIComponent(category)}`,
-    {
-      cache: "no-store",
-    }
+    { cache: "no-store" }
   );
 
-  if (!response.ok) {
+  if (response.status === 404) {
     return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch category details: ${response.status}`
+    );
   }
 
   const data: unknown = await response.json();
@@ -74,34 +77,38 @@ async function getCategoryDetails(
   if (
     !data ||
     typeof data !== "object" ||
-    !("slug" in data)
+    !("slug" in data) ||
+    typeof data.slug !== "string"
   ) {
-    return null;
+    throw new Error("Invalid category API response");
   }
 
   return data as Category;
 }
 
-function EmptyCategoryState() {
+function CategoryLoadError() {
   return (
     <main className="flex min-h-[60vh] items-center justify-center bg-[#f3f7f3] px-4 py-12 text-[#1d251e]">
       <div className="w-full max-w-md rounded-2xl border border-[#e2e8e3] bg-white p-8 text-center shadow-sm">
-        <div className="mb-4 text-5xl" aria-hidden="true">
-          🛒
-        </div>
-
         <h1 className="text-xl font-bold text-[#202820]">
-          কোনো পণ্য পাওয়া যায়নি
+          ক্যাটাগরির তথ্য লোড করা যায়নি
         </h1>
 
         <p className="mt-3 text-sm leading-6 text-[#737b73]">
-          এই ক্যাটাগরিতে কোনো পণ্য নেই অথবা ক্যাটাগরিটি
-          খুঁজে পাওয়া যায়নি।
+          ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।
         </p>
+
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#259653] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1e8045]"
+        >
+          আবার চেষ্টা করুন
+        </button>
 
         <Link
           href="/"
-          className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#259653] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1e8045]"
+          className="mt-4 inline-flex items-center justify-center rounded-lg border border-[#e2e8e3] px-5 py-3 text-sm font-semibold text-[#259653] transition hover:bg-[#f3f7f3]"
         >
           হোম পেজে ফিরে যান
         </Link>
@@ -127,12 +134,15 @@ export default async function CategoryPage({
     ]);
   } catch (error) {
     console.error("Failed to load category page:", error);
-    return <EmptyCategoryState />;
+    return <CategoryLoadError />;
   }
 
-  // Reject unknown category slugs, even if the API returns products.
-  if (!categoryDetails || products.length === 0) {
-    return <EmptyCategoryState />;
+  // Return Next.js's actual 404 page for an unknown category.
+  if (
+    !categoryDetails ||
+    categoryDetails.slug !== category
+  ) {
+    notFound();
   }
 
   const categoryTitle =
@@ -159,7 +169,15 @@ export default async function CategoryPage({
           </p>
         </div>
 
-        <CategoryProductList products={products} />
+        {products.length > 0 ? (
+          <CategoryProductList products={products} />
+        ) : (
+          <div className="rounded-2xl border border-[#e2e8e3] bg-white p-8 text-center">
+            <p className="text-[#737b73]">
+              এই ক্যাটাগরিতে বর্তমানে কোনো পণ্য নেই।
+            </p>
+          </div>
+        )}
       </div>
     </main>
   );

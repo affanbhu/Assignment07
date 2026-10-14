@@ -1,14 +1,15 @@
 
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import "./profile.css";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const redirectToastShown = useRef(false);
   const { data: session, isPending, refetch } = authClient.useSession();
 
   const [name, setName] = useState("");
@@ -21,11 +22,13 @@ export default function ProfilePage() {
     }
   }, [session]);
 
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.replace("/signin");
-    }
-  }, [isPending, session, router]);
+ useEffect(() => {
+  if (!isPending && !session && !redirectToastShown.current) {
+    redirectToastShown.current = true;
+    toast.error("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
+    router.replace("/signin");
+  }
+}, [isPending, session, router]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
