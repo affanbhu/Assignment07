@@ -63,8 +63,7 @@ cat > README.md <<'EOF'
 
 ## 🌐 Live Demo
 
-Add your deployed website URL here when your production deployment is ready.
-
+https://bazar-dor-woad-rho.vercel.app
 ## 👨‍💻 Author
 
 **Affan Bhuiyan**
