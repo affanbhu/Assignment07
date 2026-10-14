@@ -18,17 +18,22 @@ export default function RootLayout({
     <html lang="bn">
       <body>
         <ConditionalLayout>{children}</ConditionalLayout>
+
         <Toaster
           position="top-right"
+          reverseOrder={false}
+          gutter={8}
           toastOptions={{
-            duration: 4000,
+            duration: 6000,
             success: {
+              duration: 6000,
               style: {
                 background: "#eaf8ef",
                 color: "#1b7840",
               },
             },
             error: {
+              duration: 6000,
               style: {
                 background: "#fff0ef",
                 color: "#b42318",

@@ -1,8 +1,9 @@
 
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import "./profile.css";
@@ -10,54 +11,17 @@ import "./profile.css";
 export default function ProfilePage() {
   const router = useRouter();
   const redirectToastShown = useRef(false);
-  const { data: session, isPending, refetch } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
 
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
-    if (session?.user) {
-      setName(session.user.name || "");
+    if (!isPending && !session && !redirectToastShown.current) {
+      redirectToastShown.current = true;
+      toast.error("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
+      router.replace("/signin");
     }
-  }, [session]);
-
- useEffect(() => {
-  if (!isPending && !session && !redirectToastShown.current) {
-    redirectToastShown.current = true;
-    toast.error("প্রোফাইল দেখতে আগে সাইন ইন করুন।");
-    router.replace("/signin");
-  }
-}, [isPending, session, router]);
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const updatedName = name.trim();
-
-    if (!updatedName) {
-      toast.error("আপনার নাম লিখুন।");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const result = await authClient.updateUser({ name: updatedName });
-
-      if (result.error) {
-        toast.error(result.error.message || "নাম আপডেট করা যায়নি।");
-        return;
-      }
-
-      await refetch();
-      toast.success("আপনার নাম সফলভাবে আপডেট হয়েছে।");
-    } catch {
-      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-    } finally {
-      setLoading(false);
-    }
-  }
+  }, [isPending, session, router]);
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -104,11 +68,7 @@ export default function ProfilePage() {
               // eslint-disable-next-line @next/next/no-img-element
               <img src={user.image} alt="প্রোফাইল ছবি" />
             ) : (
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-              >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle
                   cx="12"
                   cy="8"
@@ -135,7 +95,7 @@ export default function ProfilePage() {
             type="button"
             className="profile-signout"
             onClick={handleSignOut}
-            disabled={signingOut || loading}
+            disabled={signingOut}
           >
             <span aria-hidden="true">↪</span>
             {signingOut ? "সাইন আউট হচ্ছে..." : "সাইন আউট"}
@@ -145,30 +105,26 @@ export default function ProfilePage() {
         <section className="profile-details-card">
           <h2>তথ্য</h2>
 
-          <form onSubmit={handleSubmit} className="profile-form">
+          <div className="profile-information">
             <div className="profile-field">
-              <label htmlFor="profile-name">নাম</label>
-              <input
-                id="profile-name"
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="আপনার নাম লিখুন"
-                autoComplete="name"
-                maxLength={100}
-                required
-                disabled={loading || signingOut}
-              />
+              <label>নাম</label>
+              <p className="profile-value">
+                {user.name || "আপনার নাম"}
+              </p>
             </div>
 
-            <button
-              type="submit"
-              className="profile-update-button"
-              disabled={loading || signingOut}
+            <div className="profile-field">
+              <label>ইমেইল</label>
+              <p className="profile-value">{user.email}</p>
+            </div>
+
+            <Link
+              href="/profile/update"
+              className="profile-update-button profile-update-link"
             >
-              {loading ? "আপডেট হচ্ছে..." : "আপডেট"}
-            </button>
-          </form>
+              Update Information
+            </Link>
+          </div>
         </section>
       </div>
     </main>

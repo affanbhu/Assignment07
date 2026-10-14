@@ -32,9 +32,14 @@ export default function SignInPage() {
         return;
       }
 
-      toast.success("সফলভাবে সাইন ইন হয়েছে!");
-      router.push("/");
-      router.refresh();
+     toast.success("সফলভাবে সাইন ইন হয়েছে!", {
+  duration: 6000,
+});
+
+setTimeout(() => {
+  router.push("/");
+  router.refresh();
+}, 2000);
     } catch {
       toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
     } finally {

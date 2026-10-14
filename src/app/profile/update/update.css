@@ -1,0 +1,51 @@
+
+.update-information-card {
+  padding-top: 18px;
+  padding-bottom: 20px;
+}
+
+.update-information-card > h2 {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.update-information-card .profile-form {
+  gap: 12px;
+}
+
+.update-information-card .profile-field label {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.update-information-card .profile-field input {
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.update-information-card .profile-update-button {
+  min-height: 40px;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.update-cancel-link {
+  display: block;
+  padding: 8px;
+  color: #078d43;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.update-cancel-link:hover {
+  text-decoration: underline;
+}
+
+.update-cancel-link:focus-visible {
+  outline: 2px solid #078d43;
+  outline-offset: 3px;
+}
