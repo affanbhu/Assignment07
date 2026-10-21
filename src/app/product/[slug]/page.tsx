@@ -1,6 +1,8 @@
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import "./product.css";
 
 export const instant = false;
@@ -99,6 +101,18 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  // Check whether the user is signed in.
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  // Redirect signed-out users to the sign-in page.
+  if (!session) {
+    redirect(
+      `/signin?next=${encodeURIComponent(`/product/${slug}`)}`
+    );
+  }
 
   let products: Product[];
 
@@ -328,3 +342,4 @@ export default async function ProductDetailPage({
     </main>
   );
 }
+

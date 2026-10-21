@@ -1,45 +1,67 @@
 
+
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { FormEvent, Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import "./signin.css";
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState("");
 
-  const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
+  // Safely determine the destination after sign-in.
+  const getNextPath = () => {
+    const next = searchParams.get("next");
+
+    if (
+      !next ||
+      !next.startsWith("/") ||
+      next.startsWith("//") ||
+      next.includes("\\")
+    ) {
+      return "/";
+    }
+
+    return next;
+  };
+
+  const handleSignIn = async (
+    e: FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const destination = getNextPath();
+
       const { error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/",
+        callbackURL: destination,
       });
 
       if (error) {
-        toast.error(error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়");
+        toast.error(
+          error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়"
+        );
         return;
       }
 
-     toast.success("সফলভাবে সাইন ইন হয়েছে!", {
-  duration: 6000,
-});
+      toast.success("সফলভাবে সাইন ইন হয়েছে!", {
+        duration: 3000,
+      });
 
-setTimeout(() => {
-  router.push("/");
-  router.refresh();
-}, 2000);
+      router.replace(destination);
+      router.refresh();
     } catch {
       toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
     } finally {
@@ -55,15 +77,20 @@ setTimeout(() => {
     try {
       const { error } = await authClient.signIn.social({
         provider,
-        callbackURL: "/",
+        callbackURL: getNextPath(),
       });
 
       if (error) {
-        toast.error(error.message || `${provider} দিয়ে সাইন ইন করা যায়নি।`);
+        toast.error(
+          error.message ||
+            `${provider} দিয়ে সাইন ইন করা যায়নি।`
+        );
         setSocialLoading("");
       }
     } catch {
-      toast.error(`${provider} দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।`);
+      toast.error(
+        `${provider} দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।`
+      );
       setSocialLoading("");
     }
   };
@@ -185,5 +212,21 @@ setTimeout(() => {
         </p>
       </main>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="signin-page">
+          <main className="signin-main">
+            <p>সাইন ইন পেজ লোড হচ্ছে...</p>
+          </main>
+        </div>
+      }
+    >
+      <SignInForm />
+    </Suspense>
   );
 }

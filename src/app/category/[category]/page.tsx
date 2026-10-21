@@ -1,6 +1,8 @@
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import CategoryProductList from "./CategoryProductList";
 
 type Product = {
@@ -98,17 +100,9 @@ function CategoryLoadError() {
           ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।
         </p>
 
-        <button
-          type="button"
-          onClick={() => window.location.reload()}
-          className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#259653] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1e8045]"
-        >
-          আবার চেষ্টা করুন
-        </button>
-
         <Link
           href="/"
-          className="mt-4 inline-flex items-center justify-center rounded-lg border border-[#e2e8e3] px-5 py-3 text-sm font-semibold text-[#259653] transition hover:bg-[#f3f7f3]"
+          className="mt-6 inline-flex items-center justify-center rounded-lg border border-[#e2e8e3] px-5 py-3 text-sm font-semibold text-[#259653] transition hover:bg-[#f3f7f3]"
         >
           হোম পেজে ফিরে যান
         </Link>
@@ -124,6 +118,20 @@ export default async function CategoryPage({
 }) {
   const { category } = await params;
 
+  // Check the user's Better Auth session.
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  // Redirect signed-out users to sign in.
+  if (!session) {
+    redirect(
+      `/signin?next=${encodeURIComponent(
+        `/category/${category}`
+      )}`
+    );
+  }
+
   let products: Product[];
   let categoryDetails: Category | null;
 
@@ -137,7 +145,7 @@ export default async function CategoryPage({
     return <CategoryLoadError />;
   }
 
-  // Return Next.js's actual 404 page for an unknown category.
+  // Show the 404 page for an unknown category.
   if (
     !categoryDetails ||
     categoryDetails.slug !== category
@@ -182,3 +190,4 @@ export default async function CategoryPage({
     </main>
   );
 }
+
